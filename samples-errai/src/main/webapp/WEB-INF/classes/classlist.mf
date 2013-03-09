@@ -1,0 +1,16 @@
+com.logikas.samples.errai.client.local.App
+com.logikas.samples.errai.server.CustomerServiceImpl
+com.logikas.samples.errai.client.view.layout.impl.MainLayoutImpl
+com.logikas.samples.errai.client.view.layout.impl.PageLayoutImpl
+com.logikas.samples.errai.client.view.layout.MainLayout
+com.logikas.samples.errai.client.view.LoginUserView
+com.logikas.samples.errai.client.view.impl.LoginUserWidget
+com.logikas.samples.errai.client.view.layout.HomePage
+com.logikas.samples.errai.client.security.SecurityInterseptor
+com.logikas.samples.errai.client.view.layout.impl.HomePageImpl
+com.logikas.samples.errai.client.shared.CustomerService
+com.logikas.samples.errai.client.view.layout.PageLayout
+com.logikas.samples.errai.client.place.configure.AppPlaceHistoryMapper
+com.logikas.samples.errai.client.place.LoginPlace
+com.logikas.samples.errai.client.presenter.LoginActivity
+com.logikas.samples.errai.client.shared.Customer
