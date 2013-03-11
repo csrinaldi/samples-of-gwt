@@ -15,46 +15,30 @@
  */
 package com.logikas.samples.errai.client.presenter.configure;
 
-import com.google.common.base.Preconditions;
-import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
-import com.google.gwt.place.shared.PlaceController;
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- *
- * @author cristian
+ * Description of MVPInitializer
+ * @author Cristian Rinaldi <csrinaldi@gmail.com>
  */
 @Singleton
+@Dependent
 public class MVPInitializer {
-    
-    @Inject
-    @ActivityCenter
-    private ActivityManager centerManager;
-    
+   
     @Produces
     @Singleton
     public EventBus getEventBus(){
         return new SimpleEventBus();
     }
-    
-    @Produces
-    @Singleton
-    public PlaceController getPlaceController(EventBus eventBus){
-        return new PlaceController(eventBus);
-    }
 
     @PostConstruct
-    private void init(EventBus bus, PlaceController controller){
-        EventBus busInstance = Preconditions.checkNotNull(bus, "EventBuss is Null");
-        ActivityManager am = Preconditions.checkNotNull(centerManager, "CenterManager is Null");
-        PlaceController pc = Preconditions.checkNotNull(controller, "PlaceController is Null");
+    private void init(){
+        
     }
-    
-    
     
 }

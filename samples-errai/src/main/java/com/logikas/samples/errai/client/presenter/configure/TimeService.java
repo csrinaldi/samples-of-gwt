@@ -15,16 +15,10 @@
  */
 package com.logikas.samples.errai.client.presenter.configure;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import javax.inject.Qualifier;
-
-@Qualifier
-@Documented
-@Retention(RetentionPolicy.RUNTIME) @Target({ElementType.TYPE, ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.LOCAL_VARIABLE})
-public @interface ActivityCenter {
-    
+/**
+ *
+ * @author cristian
+ */
+public interface TimeService {
+    public String getTime();
 }

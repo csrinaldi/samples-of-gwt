@@ -1,44 +1,43 @@
 package com.logikas.samples.errai.client.local;
 
 import com.google.common.base.Preconditions;
-import com.google.gwt.activity.shared.ActivityManager;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.KeyEvent;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.SimpleEventBus;
 import javax.annotation.PostConstruct;
+import javax.enterprise.event.Observes;
+import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.inject.Singleton;
 
 import org.jboss.errai.ioc.client.api.EntryPoint;
 
-import com.logikas.samples.errai.client.presenter.configure.MVPInitializer;
-import javax.inject.Provider;
-
 /**
- * Example code showing how to use Errai-JAXRS.
+ * Description of App
  *
- * @author Christian Sadilek <csadilek@redhat.com>
+ * @author Cristian Rinaldi <csrinaldi@gmail.com>
  */
 @EntryPoint
 public class App {
 
-    Button button = new Button("Activity");
-
-    @Inject
-    private MVPInitializer activityInitializer;
+    @Produces
+    @Singleton
+    private EventBus produceMyBean() {
+        return new SimpleEventBus();
+    }
     
+    @Inject
+    private Provider<EventBus> eventBus;
 
     @PostConstruct
     public void init() {
-        
-        //ActivityManager a = Preconditions.checkNotNull(am.get(), "CenterActivityManager is Null");
-        
-        RootPanel.get().add(button);
-        button.addClickHandler(new ClickHandler() {
+        EventBus eb = Preconditions.checkNotNull(eventBus.get(), "EventBus is null");
+        GWT.log(eb.toString());
+    }
 
-            @Override
-            public void onClick(ClickEvent event) {
-            }
-        });
+    public void keyEventManager(@Observes KeyEvent e) {
+        GWT.log("Event " + e.getSource().getClass().toString());
     }
 }

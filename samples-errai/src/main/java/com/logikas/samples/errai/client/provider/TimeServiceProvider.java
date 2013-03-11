@@ -13,32 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.logikas.samples.errai.client.presenter.configure;
+package com.logikas.samples.errai.client.provider;
 
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.SimpleEventBus;
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Produces;
+import com.logikas.samples.errai.client.presenter.configure.TimeService;
+import javax.inject.Provider;
 import javax.inject.Singleton;
+import org.jboss.errai.ioc.client.api.IOCProvider;
 
 /**
- * Description of MVPInitializer
+ * Description of TimeServiceProvider
+ * 
+ * @see TimeService
  * @author Cristian Rinaldi <csrinaldi@gmail.com>
  */
-@Singleton
-@Dependent
-public class MVPInitializer {
-   
-    @Produces
-    @Singleton
-    public EventBus getEventBus(){
-        return new SimpleEventBus();
-    }
+//@IOCProvider
+//@Singleton
+public class TimeServiceProvider /*implements Provider<TimeService>*/ {
 
-    @PostConstruct
-    private void init(){
-        
+    //@Override
+    public TimeService get() {
+
+        return new TimeService() {
+            public String getTime() {
+
+                return "It's midnight somewhere!";
+
+            }
+        };
+
     }
-    
 }

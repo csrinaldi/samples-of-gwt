@@ -2,10 +2,10 @@ package org.jboss.errai.ioc.client;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.activity.shared.Activity;
-import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.dom.client.KeyEvent;
 import com.google.gwt.event.logical.shared.HasAttachHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HasHandlers;
@@ -37,10 +37,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Default;
-import javax.enterprise.inject.Instance;
 import javax.inject.Provider;
+import org.jboss.errai.bus.client.framework.Subscription;
 import org.jboss.errai.databinding.client.DataBinderProvider;
 import org.jboss.errai.databinding.client.DataBindingModuleBootstrapper;
+import org.jboss.errai.enterprise.client.cdi.AbstractCDIEventCallback;
 import org.jboss.errai.enterprise.client.cdi.CDIEventTypeLookup;
 import org.jboss.errai.enterprise.client.cdi.EventProvider;
 import org.jboss.errai.enterprise.client.cdi.InstanceProvider;
@@ -58,6 +59,7 @@ import org.jboss.errai.ioc.client.api.builtin.RootPanelProvider;
 import org.jboss.errai.ioc.client.api.builtin.SenderProvider;
 import org.jboss.errai.ioc.client.container.CreationalCallback;
 import org.jboss.errai.ioc.client.container.CreationalContext;
+import org.jboss.errai.ioc.client.container.DestructionCallback;
 import org.jboss.errai.ioc.client.container.IOCBeanManager;
 import org.jboss.errai.ioc.client.container.InitializationCallback;
 import org.jboss.errai.ui.client.widget.ListWidgetProvider;
@@ -66,21 +68,52 @@ import org.jboss.errai.ui.shared.TemplateUtil;
 
 public class BootstrapperImpl implements Bootstrapper {
   {
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyPressEvent", "com.google.gwt.event.dom.client.KeyEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyPressEvent", "com.google.gwt.event.dom.client.DomEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyPressEvent", "com.google.gwt.event.dom.client.HasNativeEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyPressEvent", "com.google.gwt.event.shared.GwtEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyPressEvent", "com.google.web.bindery.event.shared.Event");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyPressEvent", "java.lang.Object");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyCodeEvent", "com.google.gwt.event.dom.client.KeyEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyCodeEvent", "com.google.gwt.event.dom.client.DomEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyCodeEvent", "com.google.gwt.event.dom.client.HasNativeEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyCodeEvent", "com.google.gwt.event.shared.GwtEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyCodeEvent", "com.google.web.bindery.event.shared.Event");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyCodeEvent", "java.lang.Object");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyUpEvent", "com.google.gwt.event.dom.client.KeyCodeEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyUpEvent", "com.google.gwt.event.dom.client.KeyEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyUpEvent", "com.google.gwt.event.dom.client.DomEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyUpEvent", "com.google.gwt.event.dom.client.HasNativeEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyUpEvent", "com.google.gwt.event.shared.GwtEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyUpEvent", "com.google.web.bindery.event.shared.Event");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyUpEvent", "java.lang.Object");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyEvent", "com.google.gwt.event.dom.client.DomEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyEvent", "com.google.gwt.event.dom.client.HasNativeEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyEvent", "com.google.gwt.event.shared.GwtEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyEvent", "com.google.web.bindery.event.shared.Event");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyEvent", "java.lang.Object");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyDownEvent", "com.google.gwt.event.dom.client.KeyCodeEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyDownEvent", "com.google.gwt.event.dom.client.KeyEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyDownEvent", "com.google.gwt.event.dom.client.DomEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyDownEvent", "com.google.gwt.event.dom.client.HasNativeEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyDownEvent", "com.google.gwt.event.shared.GwtEvent");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyDownEvent", "com.google.web.bindery.event.shared.Event");
+    CDIEventTypeLookup.get().addLookup("com.google.gwt.event.dom.client.KeyDownEvent", "java.lang.Object");
     new CDI().initLookupTable(CDIEventTypeLookup.get());
     new DataBindingModuleBootstrapper().run();
     new JaxrsModuleBootstrapper().run();
   }
-  private final Default _1998831462Default_18768679 = new Default() {
-    public Class annotationType() {
-      return Default.class;
-    }
-  };
-  private final Any _1998831462Any_33530976 = new Any() {
+  private final Any _1998831462Any_95716 = new Any() {
     public Class annotationType() {
       return Any.class;
     }
   };
-  private final Annotation[] arrayOf_19635043Annotation_28758915 = new Annotation[] { _1998831462Default_18768679, _1998831462Any_33530976 };
+  private final Default _1998831462Default_26508945 = new Default() {
+    public Class annotationType() {
+      return Default.class;
+    }
+  };
+  private final Annotation[] arrayOf_19635043Annotation_30012296 = new Annotation[] { _1998831462Any_95716, _1998831462Default_26508945 };
   private final LoadAsync _1369430986LoadAsync_0 = new LoadAsync() {
     public Class annotationType() {
       return LoadAsync.class;
@@ -89,238 +122,248 @@ public class BootstrapperImpl implements Bootstrapper {
       return "@org.jboss.errai.ioc.client.api.LoadAsync()";
     }
   };
-  private final Annotation[] arrayOf_19635043Annotation_29684577 = new Annotation[] { _1369430986LoadAsync_0, _1998831462Any_33530976 };
+  private final Annotation[] arrayOf_19635043Annotation_11096404 = new Annotation[] { _1369430986LoadAsync_0, _1998831462Any_95716 };
   private final BootstrapperInjectionContext injContext = new BootstrapperInjectionContext();
   private final CreationalContext context = injContext.getRootContext();
-  private final CreationalCallback<CenterActivityManagerProvider> inj41207_CenterActivityManagerProvider_creational = new CreationalCallback<CenterActivityManagerProvider>() {
+  private final CreationalCallback<CenterActivityManagerProvider> inj4110_CenterActivityManagerProvider_creational = new CreationalCallback<CenterActivityManagerProvider>() {
     public CenterActivityManagerProvider getInstance(final CreationalContext context) {
-      final CenterActivityManagerProvider inj41206_CenterActivityManagerProvider = new CenterActivityManagerProvider();
-      context.addBean(context.getBeanReference(CenterActivityManagerProvider.class, arrayOf_19635043Annotation_28758915), inj41206_CenterActivityManagerProvider);
-      return inj41206_CenterActivityManagerProvider;
+      final CenterActivityManagerProvider inj4109_CenterActivityManagerProvider = new CenterActivityManagerProvider();
+      context.addBean(context.getBeanReference(CenterActivityManagerProvider.class, arrayOf_19635043Annotation_30012296), inj4109_CenterActivityManagerProvider);
+      return inj4109_CenterActivityManagerProvider;
     }
   };
-  private final CenterActivityManagerProvider inj41206_CenterActivityManagerProvider = inj41207_CenterActivityManagerProvider_creational.getInstance(context);
-  private final CreationalCallback<DataBinderProvider> inj41208_DataBinderProvider_creational = new CreationalCallback<DataBinderProvider>() {
+  private final CenterActivityManagerProvider inj4109_CenterActivityManagerProvider = inj4110_CenterActivityManagerProvider_creational.getInstance(context);
+  private final CreationalCallback<DataBinderProvider> inj4111_DataBinderProvider_creational = new CreationalCallback<DataBinderProvider>() {
     public DataBinderProvider getInstance(final CreationalContext context) {
-      final DataBinderProvider inj41192_DataBinderProvider = new DataBinderProvider();
-      context.addBean(context.getBeanReference(DataBinderProvider.class, arrayOf_19635043Annotation_28758915), inj41192_DataBinderProvider);
-      return inj41192_DataBinderProvider;
+      final DataBinderProvider inj4095_DataBinderProvider = new DataBinderProvider();
+      context.addBean(context.getBeanReference(DataBinderProvider.class, arrayOf_19635043Annotation_30012296), inj4095_DataBinderProvider);
+      return inj4095_DataBinderProvider;
     }
   };
-  private final DataBinderProvider inj41192_DataBinderProvider = inj41208_DataBinderProvider_creational.getInstance(context);
-  private final CreationalCallback<RequestDispatcherProvider> inj41209_RequestDispatcherProvider_creational = new CreationalCallback<RequestDispatcherProvider>() {
+  private final DataBinderProvider inj4095_DataBinderProvider = inj4111_DataBinderProvider_creational.getInstance(context);
+  private final CreationalCallback<RequestDispatcherProvider> inj4112_RequestDispatcherProvider_creational = new CreationalCallback<RequestDispatcherProvider>() {
     public RequestDispatcherProvider getInstance(final CreationalContext context) {
-      final RequestDispatcherProvider inj41186_RequestDispatcherProvider = new RequestDispatcherProvider();
-      context.addBean(context.getBeanReference(RequestDispatcherProvider.class, arrayOf_19635043Annotation_28758915), inj41186_RequestDispatcherProvider);
-      return inj41186_RequestDispatcherProvider;
+      final RequestDispatcherProvider inj4089_RequestDispatcherProvider = new RequestDispatcherProvider();
+      context.addBean(context.getBeanReference(RequestDispatcherProvider.class, arrayOf_19635043Annotation_30012296), inj4089_RequestDispatcherProvider);
+      return inj4089_RequestDispatcherProvider;
     }
   };
-  private final RequestDispatcherProvider inj41186_RequestDispatcherProvider = inj41209_RequestDispatcherProvider_creational.getInstance(context);
-  private final CreationalCallback<InstanceProvider> inj41210_InstanceProvider_creational = new CreationalCallback<InstanceProvider>() {
+  private final RequestDispatcherProvider inj4089_RequestDispatcherProvider = inj4112_RequestDispatcherProvider_creational.getInstance(context);
+  private final CreationalCallback<InstanceProvider> inj4113_InstanceProvider_creational = new CreationalCallback<InstanceProvider>() {
     public InstanceProvider getInstance(final CreationalContext context) {
-      final InstanceProvider inj41194_InstanceProvider = new InstanceProvider();
-      context.addBean(context.getBeanReference(InstanceProvider.class, arrayOf_19635043Annotation_28758915), inj41194_InstanceProvider);
-      return inj41194_InstanceProvider;
+      final InstanceProvider inj4097_InstanceProvider = new InstanceProvider();
+      context.addBean(context.getBeanReference(InstanceProvider.class, arrayOf_19635043Annotation_30012296), inj4097_InstanceProvider);
+      return inj4097_InstanceProvider;
     }
   };
-  private final InstanceProvider inj41194_InstanceProvider = inj41210_InstanceProvider_creational.getInstance(context);
-  private final CreationalCallback<RootPanelProvider> inj41212_RootPanelProvider_creational = new CreationalCallback<RootPanelProvider>() {
+  private final InstanceProvider inj4097_InstanceProvider = inj4113_InstanceProvider_creational.getInstance(context);
+  private final CreationalCallback<RootPanelProvider> inj4114_RootPanelProvider_creational = new CreationalCallback<RootPanelProvider>() {
     public RootPanelProvider getInstance(final CreationalContext context) {
-      final RootPanelProvider inj41188_RootPanelProvider = new RootPanelProvider();
-      context.addBean(context.getBeanReference(RootPanelProvider.class, arrayOf_19635043Annotation_28758915), inj41188_RootPanelProvider);
-      return inj41188_RootPanelProvider;
+      final RootPanelProvider inj4091_RootPanelProvider = new RootPanelProvider();
+      context.addBean(context.getBeanReference(RootPanelProvider.class, arrayOf_19635043Annotation_30012296), inj4091_RootPanelProvider);
+      return inj4091_RootPanelProvider;
     }
   };
-  private final RootPanelProvider inj41188_RootPanelProvider = inj41212_RootPanelProvider_creational.getInstance(context);
-  private final CreationalCallback<IOCBeanManagerProvider> inj41213_IOCBeanManagerProvider_creational = new CreationalCallback<IOCBeanManagerProvider>() {
+  private final RootPanelProvider inj4091_RootPanelProvider = inj4114_RootPanelProvider_creational.getInstance(context);
+  private final CreationalCallback<IOCBeanManagerProvider> inj4115_IOCBeanManagerProvider_creational = new CreationalCallback<IOCBeanManagerProvider>() {
     public IOCBeanManagerProvider getInstance(final CreationalContext context) {
-      final IOCBeanManagerProvider inj41190_IOCBeanManagerProvider = new IOCBeanManagerProvider();
-      context.addBean(context.getBeanReference(IOCBeanManagerProvider.class, arrayOf_19635043Annotation_28758915), inj41190_IOCBeanManagerProvider);
-      return inj41190_IOCBeanManagerProvider;
+      final IOCBeanManagerProvider inj4093_IOCBeanManagerProvider = new IOCBeanManagerProvider();
+      context.addBean(context.getBeanReference(IOCBeanManagerProvider.class, arrayOf_19635043Annotation_30012296), inj4093_IOCBeanManagerProvider);
+      return inj4093_IOCBeanManagerProvider;
     }
   };
-  private final IOCBeanManagerProvider inj41190_IOCBeanManagerProvider = inj41213_IOCBeanManagerProvider_creational.getInstance(context);
-  private final CreationalCallback<MessageBusProvider> inj41214_MessageBusProvider_creational = new CreationalCallback<MessageBusProvider>() {
+  private final IOCBeanManagerProvider inj4093_IOCBeanManagerProvider = inj4115_IOCBeanManagerProvider_creational.getInstance(context);
+  private final CreationalCallback<MessageBusProvider> inj4116_MessageBusProvider_creational = new CreationalCallback<MessageBusProvider>() {
     public MessageBusProvider getInstance(final CreationalContext context) {
-      final MessageBusProvider inj41184_MessageBusProvider = new MessageBusProvider();
-      context.addBean(context.getBeanReference(MessageBusProvider.class, arrayOf_19635043Annotation_28758915), inj41184_MessageBusProvider);
-      return inj41184_MessageBusProvider;
+      final MessageBusProvider inj4087_MessageBusProvider = new MessageBusProvider();
+      context.addBean(context.getBeanReference(MessageBusProvider.class, arrayOf_19635043Annotation_30012296), inj4087_MessageBusProvider);
+      return inj4087_MessageBusProvider;
     }
   };
-  private final MessageBusProvider inj41184_MessageBusProvider = inj41214_MessageBusProvider_creational.getInstance(context);
-  private InitializationCallback<MVPInitializer> init_inj41211_MVPInitializer = new InitializationCallback<MVPInitializer>() {
-    public void init(final MVPInitializer obj) {
-      _$1880957021_init(obj);
-    }
-  };
-  private final CreationalCallback<MVPInitializer> inj41215_MVPInitializer_creational = new CreationalCallback<MVPInitializer>() {
-    public MVPInitializer getInstance(final CreationalContext context) {
-      final MVPInitializer inj41211_MVPInitializer = new MVPInitializer();
-      context.addBean(context.getBeanReference(MVPInitializer.class, arrayOf_19635043Annotation_28758915), inj41211_MVPInitializer);
-      _$1880957021_actMapper(inj41211_MVPInitializer, inj41194_InstanceProvider.provide(new Class[] { CenterActivityMapper.class }, null));
-      _$1880957021_bus(inj41211_MVPInitializer, inj41194_InstanceProvider.provide(new Class[] { EventBus.class }, null));
-      _$1880957021_centerActivityManager(inj41211_MVPInitializer, inj41194_InstanceProvider.provide(new Class[] { ActivityManager.class }, null));
-      context.addInitializationCallback(inj41211_MVPInitializer, init_inj41211_MVPInitializer);
-      return inj41211_MVPInitializer;
-    }
-  };
-  private final MVPInitializer inj41211_MVPInitializer = inj41215_MVPInitializer_creational.getInstance(context);
-  private InitializationCallback<App> init_inj41216_App = new InitializationCallback<App>() {
+  private final MessageBusProvider inj4087_MessageBusProvider = inj4116_MessageBusProvider_creational.getInstance(context);
+  private InitializationCallback<App> init_inj4117_App = new InitializationCallback<App>() {
     public void init(final App obj) {
       obj.init();
     }
   };
-  private final CreationalCallback<App> inj41217_App_creational = new CreationalCallback<App>() {
+  private final CreationalCallback<App> inj4118_App_creational = new CreationalCallback<App>() {
     public App getInstance(final CreationalContext context) {
-      final App inj41216_App = new App();
-      context.addBean(context.getBeanReference(App.class, arrayOf_19635043Annotation_28758915), inj41216_App);
-      _$295373500_activityInitializer(inj41216_App, inj41211_MVPInitializer);
-      context.addInitializationCallback(inj41216_App, init_inj41216_App);
-      return inj41216_App;
+      final App inj4117_App = new App();
+      context.addBean(context.getBeanReference(App.class, arrayOf_19635043Annotation_30012296), inj4117_App);
+      _$295373500_eventBus(inj4117_App, inj4097_InstanceProvider.provide(new Class[] { EventBus.class }, null));
+      final Subscription var17 = CDI.subscribeLocal("com.google.gwt.event.dom.client.KeyEvent", new AbstractCDIEventCallback<KeyEvent>() {
+        public void fireEvent(final KeyEvent event) {
+          inj4117_App.keyEventManager(event);
+        }
+        public String toString() {
+          return "Observer: com.google.gwt.event.dom.client.KeyEvent []";
+        }
+      });
+      context.addDestructionCallback(inj4117_App, new DestructionCallback<App>() {
+        public void destroy(final App obj) {
+          var17.remove();
+        }
+      });
+      context.addInitializationCallback(inj4117_App, init_inj4117_App);
+      return inj4117_App;
     }
   };
-  private final App inj41216_App = inj41217_App_creational.getInstance(context);
-  private final CreationalCallback<EventProvider> inj41218_EventProvider_creational = new CreationalCallback<EventProvider>() {
+  private final App inj4117_App = inj4118_App_creational.getInstance(context);
+  private final CreationalCallback<EventProvider> inj4119_EventProvider_creational = new CreationalCallback<EventProvider>() {
     public EventProvider getInstance(final CreationalContext context) {
-      final EventProvider inj41198_EventProvider = new EventProvider();
-      context.addBean(context.getBeanReference(EventProvider.class, arrayOf_19635043Annotation_28758915), inj41198_EventProvider);
-      return inj41198_EventProvider;
+      final EventProvider inj4101_EventProvider = new EventProvider();
+      context.addBean(context.getBeanReference(EventProvider.class, arrayOf_19635043Annotation_30012296), inj4101_EventProvider);
+      return inj4101_EventProvider;
     }
   };
-  private final EventProvider inj41198_EventProvider = inj41218_EventProvider_creational.getInstance(context);
-  private final CreationalCallback<SenderProvider> inj41219_SenderProvider_creational = new CreationalCallback<SenderProvider>() {
+  private final EventProvider inj4101_EventProvider = inj4119_EventProvider_creational.getInstance(context);
+  private final CreationalCallback<SenderProvider> inj4120_SenderProvider_creational = new CreationalCallback<SenderProvider>() {
     public SenderProvider getInstance(final CreationalContext context) {
-      final SenderProvider inj41204_SenderProvider = new SenderProvider();
-      context.addBean(context.getBeanReference(SenderProvider.class, arrayOf_19635043Annotation_28758915), inj41204_SenderProvider);
-      return inj41204_SenderProvider;
+      final SenderProvider inj4107_SenderProvider = new SenderProvider();
+      context.addBean(context.getBeanReference(SenderProvider.class, arrayOf_19635043Annotation_30012296), inj4107_SenderProvider);
+      return inj4107_SenderProvider;
     }
   };
-  private final SenderProvider inj41204_SenderProvider = inj41219_SenderProvider_creational.getInstance(context);
-  private final CreationalCallback<InitBallotProvider> inj41220_InitBallotProvider_creational = new CreationalCallback<InitBallotProvider>() {
+  private final SenderProvider inj4107_SenderProvider = inj4120_SenderProvider_creational.getInstance(context);
+  private final CreationalCallback<InitBallotProvider> inj4121_InitBallotProvider_creational = new CreationalCallback<InitBallotProvider>() {
     public InitBallotProvider getInstance(final CreationalContext context) {
-      final InitBallotProvider inj41196_InitBallotProvider = new InitBallotProvider();
-      context.addBean(context.getBeanReference(InitBallotProvider.class, arrayOf_19635043Annotation_28758915), inj41196_InitBallotProvider);
-      return inj41196_InitBallotProvider;
+      final InitBallotProvider inj4099_InitBallotProvider = new InitBallotProvider();
+      context.addBean(context.getBeanReference(InitBallotProvider.class, arrayOf_19635043Annotation_30012296), inj4099_InitBallotProvider);
+      return inj4099_InitBallotProvider;
     }
   };
-  private final InitBallotProvider inj41196_InitBallotProvider = inj41220_InitBallotProvider_creational.getInstance(context);
-  private InitializationCallback<PageLayoutImpl> init_inj41222_PageLayoutImpl = new InitializationCallback<PageLayoutImpl>() {
+  private final InitBallotProvider inj4099_InitBallotProvider = inj4121_InitBallotProvider_creational.getInstance(context);
+  private InitializationCallback<PageLayoutImpl> init_inj4123_PageLayoutImpl = new InitializationCallback<PageLayoutImpl>() {
     public void init(final PageLayoutImpl obj) {
       obj.init();
     }
   };
-  private final CreationalCallback<PageLayoutImpl> inj41223_PageLayoutImpl_creational = new CreationalCallback<PageLayoutImpl>() {
+  private final CreationalCallback<PageLayoutImpl> inj4124_PageLayoutImpl_creational = new CreationalCallback<PageLayoutImpl>() {
     public PageLayoutImpl getInstance(final CreationalContext context) {
-      final PageLayoutImpl inj41222_PageLayoutImpl = new PageLayoutImpl();
-      context.addBean(context.getBeanReference(PageLayoutImpl.class, arrayOf_19635043Annotation_28758915), inj41222_PageLayoutImpl);
-      context.addInitializationCallback(inj41222_PageLayoutImpl, new InitializationCallback<PageLayoutImpl>() {
+      final PageLayoutImpl inj4123_PageLayoutImpl = new PageLayoutImpl();
+      context.addBean(context.getBeanReference(PageLayoutImpl.class, arrayOf_19635043Annotation_30012296), inj4123_PageLayoutImpl);
+      context.addInitializationCallback(inj4123_PageLayoutImpl, new InitializationCallback<PageLayoutImpl>() {
         public void init(PageLayoutImpl obj) {
-          com_logikas_samples_errai_client_view_layout_impl_PageLayoutImplTemplateResource var220 = GWT.create(com_logikas_samples_errai_client_view_layout_impl_PageLayoutImplTemplateResource.class);
-          Element var221 = TemplateUtil.getRootTemplateElement(var220.getContents().getText(), "");
-          Map<String, Element> var222 = TemplateUtil.getDataFieldElements(var221);
-          Map<String, Widget> var223 = new LinkedHashMap<String, Widget>();
-          TemplateUtil.initWidget(inj41222_PageLayoutImpl, var221, var223.values());
+          com_logikas_samples_errai_client_view_layout_impl_PageLayoutImplTemplateResource var18 = GWT.create(com_logikas_samples_errai_client_view_layout_impl_PageLayoutImplTemplateResource.class);
+          Element var19 = TemplateUtil.getRootTemplateElement(var18.getContents().getText(), "");
+          Map<String, Element> var20 = TemplateUtil.getDataFieldElements(var19);
+          Map<String, Widget> var21 = new LinkedHashMap<String, Widget>();
+          TemplateUtil.initWidget(inj4123_PageLayoutImpl, var19, var21.values());
         }
       });
-      context.addInitializationCallback(inj41222_PageLayoutImpl, init_inj41222_PageLayoutImpl);
-      return inj41222_PageLayoutImpl;
+      context.addInitializationCallback(inj4123_PageLayoutImpl, init_inj4123_PageLayoutImpl);
+      return inj4123_PageLayoutImpl;
     }
   };
-  private InitializationCallback<HomePageImpl> init_inj39973_HomePageImpl = new InitializationCallback<HomePageImpl>() {
+  private InitializationCallback<HomePageImpl> init_inj2875_HomePageImpl = new InitializationCallback<HomePageImpl>() {
     public void init(final HomePageImpl obj) {
       obj.init();
     }
   };
-  private final CreationalCallback<HomePageImpl> inj41224_HomePageImpl_creational = new CreationalCallback<HomePageImpl>() {
+  private final CreationalCallback<HomePageImpl> inj4125_HomePageImpl_creational = new CreationalCallback<HomePageImpl>() {
     public HomePageImpl getInstance(final CreationalContext context) {
-      final HomePageImpl inj39973_HomePageImpl = new HomePageImpl();
-      context.addBean(context.getBeanReference(HomePageImpl.class, arrayOf_19635043Annotation_28758915), inj39973_HomePageImpl);
-      context.addInitializationCallback(inj39973_HomePageImpl, new InitializationCallback<HomePageImpl>() {
+      final HomePageImpl inj2875_HomePageImpl = new HomePageImpl();
+      context.addBean(context.getBeanReference(HomePageImpl.class, arrayOf_19635043Annotation_30012296), inj2875_HomePageImpl);
+      context.addInitializationCallback(inj2875_HomePageImpl, new InitializationCallback<HomePageImpl>() {
         public void init(HomePageImpl obj) {
-          com_logikas_samples_errai_client_view_layout_impl_HomePageImplTemplateResource var224 = GWT.create(com_logikas_samples_errai_client_view_layout_impl_HomePageImplTemplateResource.class);
-          Element var225 = TemplateUtil.getRootTemplateElement(var224.getContents().getText(), "");
-          Map<String, Element> var226 = TemplateUtil.getDataFieldElements(var225);
-          Map<String, Widget> var227 = new LinkedHashMap<String, Widget>();
-          TemplateUtil.initWidget(inj39973_HomePageImpl, var225, var227.values());
+          com_logikas_samples_errai_client_view_layout_impl_HomePageImplTemplateResource var22 = GWT.create(com_logikas_samples_errai_client_view_layout_impl_HomePageImplTemplateResource.class);
+          Element var23 = TemplateUtil.getRootTemplateElement(var22.getContents().getText(), "");
+          Map<String, Element> var24 = TemplateUtil.getDataFieldElements(var23);
+          Map<String, Widget> var25 = new LinkedHashMap<String, Widget>();
+          TemplateUtil.initWidget(inj2875_HomePageImpl, var23, var25.values());
         }
       });
-      context.addInitializationCallback(inj39973_HomePageImpl, init_inj39973_HomePageImpl);
-      return inj39973_HomePageImpl;
+      context.addInitializationCallback(inj2875_HomePageImpl, init_inj2875_HomePageImpl);
+      return inj2875_HomePageImpl;
     }
   };
-  private final CreationalCallback<CenterActivityMapper> inj41226_CenterActivityMapper_creational = new CreationalCallback<CenterActivityMapper>() {
+  private final CreationalCallback<CenterActivityMapper> inj4127_CenterActivityMapper_creational = new CreationalCallback<CenterActivityMapper>() {
     public CenterActivityMapper getInstance(final CreationalContext context) {
-      final Provider<LoginActivity> var228 = inj41194_InstanceProvider.provide(new Class[] { LoginActivity.class }, null);
-      final CenterActivityMapper inj41225_CenterActivityMapper = new CenterActivityMapper(var228);
-      context.addBean(context.getBeanReference(CenterActivityMapper.class, arrayOf_19635043Annotation_28758915), inj41225_CenterActivityMapper);
-      return inj41225_CenterActivityMapper;
+      final Provider<LoginActivity> var26 = inj4097_InstanceProvider.provide(new Class[] { LoginActivity.class }, null);
+      final CenterActivityMapper inj4126_CenterActivityMapper = new CenterActivityMapper(var26);
+      context.addBean(context.getBeanReference(CenterActivityMapper.class, arrayOf_19635043Annotation_30012296), inj4126_CenterActivityMapper);
+      return inj4126_CenterActivityMapper;
     }
   };
-  private final CenterActivityMapper inj41225_CenterActivityMapper = inj41226_CenterActivityMapper_creational.getInstance(context);
-  private final CreationalCallback<CallerProvider> inj41227_CallerProvider_creational = new CreationalCallback<CallerProvider>() {
+  private final CenterActivityMapper inj4126_CenterActivityMapper = inj4127_CenterActivityMapper_creational.getInstance(context);
+  private final CreationalCallback<CallerProvider> inj4128_CallerProvider_creational = new CreationalCallback<CallerProvider>() {
     public CallerProvider getInstance(final CreationalContext context) {
-      final CallerProvider inj41200_CallerProvider = new CallerProvider();
-      context.addBean(context.getBeanReference(CallerProvider.class, arrayOf_19635043Annotation_28758915), inj41200_CallerProvider);
-      return inj41200_CallerProvider;
+      final CallerProvider inj4103_CallerProvider = new CallerProvider();
+      context.addBean(context.getBeanReference(CallerProvider.class, arrayOf_19635043Annotation_30012296), inj4103_CallerProvider);
+      return inj4103_CallerProvider;
     }
   };
-  private final CallerProvider inj41200_CallerProvider = inj41227_CallerProvider_creational.getInstance(context);
-  private final CreationalCallback<LoginUserWidget> inj41229_LoginUserWidget_creational = new CreationalCallback<LoginUserWidget>() {
+  private final CallerProvider inj4103_CallerProvider = inj4128_CallerProvider_creational.getInstance(context);
+  private final CreationalCallback<LoginUserWidget> inj4130_LoginUserWidget_creational = new CreationalCallback<LoginUserWidget>() {
     public LoginUserWidget getInstance(final CreationalContext context) {
-      final LoginUserWidget inj41228_LoginUserWidget = new LoginUserWidget();
-      context.addBean(context.getBeanReference(LoginUserWidget.class, arrayOf_19635043Annotation_29684577), inj41228_LoginUserWidget);
-      return inj41228_LoginUserWidget;
+      final LoginUserWidget inj4129_LoginUserWidget = new LoginUserWidget();
+      context.addBean(context.getBeanReference(LoginUserWidget.class, arrayOf_19635043Annotation_11096404), inj4129_LoginUserWidget);
+      return inj4129_LoginUserWidget;
     }
   };
-  private final LoginUserWidget inj41228_LoginUserWidget = inj41229_LoginUserWidget_creational.getInstance(context);
-  private InitializationCallback<LoginActivity> init_inj41230_LoginActivity = new InitializationCallback<LoginActivity>() {
+  private final LoginUserWidget inj4129_LoginUserWidget = inj4130_LoginUserWidget_creational.getInstance(context);
+  private InitializationCallback<LoginActivity> init_inj4131_LoginActivity = new InitializationCallback<LoginActivity>() {
     public void init(final LoginActivity obj) {
       _$1378313608_init(obj);
     }
   };
-  private final CreationalCallback<LoginActivity> inj41231_LoginActivity_creational = new CreationalCallback<LoginActivity>() {
+  private final CreationalCallback<LoginActivity> inj4132_LoginActivity_creational = new CreationalCallback<LoginActivity>() {
     public LoginActivity getInstance(final CreationalContext context) {
-      final LoginUserView var229 = inj41228_LoginUserWidget;
-      final LoginActivity inj41230_LoginActivity = new LoginActivity(var229);
-      context.addBean(context.getBeanReference(LoginActivity.class, arrayOf_19635043Annotation_28758915), inj41230_LoginActivity);
-      context.addInitializationCallback(inj41230_LoginActivity, init_inj41230_LoginActivity);
-      return inj41230_LoginActivity;
+      final LoginUserView var27 = inj4129_LoginUserWidget;
+      final LoginActivity inj4131_LoginActivity = new LoginActivity(var27);
+      context.addBean(context.getBeanReference(LoginActivity.class, arrayOf_19635043Annotation_30012296), inj4131_LoginActivity);
+      context.addInitializationCallback(inj4131_LoginActivity, init_inj4131_LoginActivity);
+      return inj4131_LoginActivity;
     }
   };
-  private final CreationalCallback<MainLayoutImpl> inj41233_MainLayoutImpl_creational = new CreationalCallback<MainLayoutImpl>() {
+  private final CreationalCallback<MainLayoutImpl> inj4134_MainLayoutImpl_creational = new CreationalCallback<MainLayoutImpl>() {
     public MainLayoutImpl getInstance(final CreationalContext context) {
-      final MainLayoutImpl inj41232_MainLayoutImpl = new MainLayoutImpl();
-      context.addBean(context.getBeanReference(MainLayoutImpl.class, arrayOf_19635043Annotation_28758915), inj41232_MainLayoutImpl);
-      context.addInitializationCallback(inj41232_MainLayoutImpl, new InitializationCallback<MainLayoutImpl>() {
+      final MainLayoutImpl inj4133_MainLayoutImpl = new MainLayoutImpl();
+      context.addBean(context.getBeanReference(MainLayoutImpl.class, arrayOf_19635043Annotation_30012296), inj4133_MainLayoutImpl);
+      context.addInitializationCallback(inj4133_MainLayoutImpl, new InitializationCallback<MainLayoutImpl>() {
         public void init(MainLayoutImpl obj) {
-          com_logikas_samples_errai_client_view_layout_impl_MainLayoutImplTemplateResource var230 = GWT.create(com_logikas_samples_errai_client_view_layout_impl_MainLayoutImplTemplateResource.class);
-          Element var231 = TemplateUtil.getRootTemplateElement(var230.getContents().getText(), "");
-          Map<String, Element> var232 = TemplateUtil.getDataFieldElements(var231);
-          Map<String, Widget> var233 = new LinkedHashMap<String, Widget>();
-          TemplateUtil.initWidget(inj41232_MainLayoutImpl, var231, var233.values());
+          com_logikas_samples_errai_client_view_layout_impl_MainLayoutImplTemplateResource var28 = GWT.create(com_logikas_samples_errai_client_view_layout_impl_MainLayoutImplTemplateResource.class);
+          Element var29 = TemplateUtil.getRootTemplateElement(var28.getContents().getText(), "");
+          Map<String, Element> var30 = TemplateUtil.getDataFieldElements(var29);
+          Map<String, Widget> var31 = new LinkedHashMap<String, Widget>();
+          TemplateUtil.initWidget(inj4133_MainLayoutImpl, var29, var31.values());
         }
       });
-      return inj41232_MainLayoutImpl;
+      return inj4133_MainLayoutImpl;
     }
   };
-  private final MainLayoutImpl inj41232_MainLayoutImpl = inj41233_MainLayoutImpl_creational.getInstance(context);
-  private final CreationalCallback<ListWidgetProvider> inj41234_ListWidgetProvider_creational = new CreationalCallback<ListWidgetProvider>() {
+  private final MainLayoutImpl inj4133_MainLayoutImpl = inj4134_MainLayoutImpl_creational.getInstance(context);
+  private final CreationalCallback<ListWidgetProvider> inj4135_ListWidgetProvider_creational = new CreationalCallback<ListWidgetProvider>() {
     public ListWidgetProvider getInstance(final CreationalContext context) {
-      final ListWidgetProvider inj41182_ListWidgetProvider = new ListWidgetProvider();
-      context.addBean(context.getBeanReference(ListWidgetProvider.class, arrayOf_19635043Annotation_28758915), inj41182_ListWidgetProvider);
-      return inj41182_ListWidgetProvider;
+      final ListWidgetProvider inj4085_ListWidgetProvider = new ListWidgetProvider();
+      context.addBean(context.getBeanReference(ListWidgetProvider.class, arrayOf_19635043Annotation_30012296), inj4085_ListWidgetProvider);
+      return inj4085_ListWidgetProvider;
     }
   };
-  private final ListWidgetProvider inj41182_ListWidgetProvider = inj41234_ListWidgetProvider_creational.getInstance(context);
-  private final CreationalCallback<DisposerProvider> inj41235_DisposerProvider_creational = new CreationalCallback<DisposerProvider>() {
+  private final ListWidgetProvider inj4085_ListWidgetProvider = inj4135_ListWidgetProvider_creational.getInstance(context);
+  private InitializationCallback<MVPInitializer> init_inj4136_MVPInitializer = new InitializationCallback<MVPInitializer>() {
+    public void init(final MVPInitializer obj) {
+      _$1880957021_init(obj);
+    }
+  };
+  private final CreationalCallback<MVPInitializer> inj4137_MVPInitializer_creational = new CreationalCallback<MVPInitializer>() {
+    public MVPInitializer getInstance(final CreationalContext context) {
+      final MVPInitializer inj4136_MVPInitializer = new MVPInitializer();
+      context.addBean(context.getBeanReference(MVPInitializer.class, arrayOf_19635043Annotation_30012296), inj4136_MVPInitializer);
+      context.addInitializationCallback(inj4136_MVPInitializer, init_inj4136_MVPInitializer);
+      return inj4136_MVPInitializer;
+    }
+  };
+  private final MVPInitializer inj4136_MVPInitializer = inj4137_MVPInitializer_creational.getInstance(context);
+  private final CreationalCallback<DisposerProvider> inj4138_DisposerProvider_creational = new CreationalCallback<DisposerProvider>() {
     public DisposerProvider getInstance(final CreationalContext context) {
-      final DisposerProvider inj41202_DisposerProvider = new DisposerProvider();
-      context.addBean(context.getBeanReference(DisposerProvider.class, arrayOf_19635043Annotation_28758915), inj41202_DisposerProvider);
-      _$1300398733_beanManager(inj41202_DisposerProvider, inj41190_IOCBeanManagerProvider.get());
-      return inj41202_DisposerProvider;
+      final DisposerProvider inj4105_DisposerProvider = new DisposerProvider();
+      context.addBean(context.getBeanReference(DisposerProvider.class, arrayOf_19635043Annotation_30012296), inj4105_DisposerProvider);
+      _$1300398733_beanManager(inj4105_DisposerProvider, inj4093_IOCBeanManagerProvider.get());
+      return inj4105_DisposerProvider;
     }
   };
-  private final DisposerProvider inj41202_DisposerProvider = inj41235_DisposerProvider_creational.getInstance(context);
+  private final DisposerProvider inj4105_DisposerProvider = inj4138_DisposerProvider_creational.getInstance(context);
   public interface com_logikas_samples_errai_client_view_layout_impl_PageLayoutImplTemplateResource extends Template, ClientBundle {
   @Source("com/logikas/samples/errai/client/view/layout/impl/PageLayoutImpl.html") public TextResource getContents(); }
   public interface com_logikas_samples_errai_client_view_layout_impl_HomePageImplTemplateResource extends Template, ClientBundle {
@@ -328,104 +371,117 @@ public class BootstrapperImpl implements Bootstrapper {
   public interface com_logikas_samples_errai_client_view_layout_impl_MainLayoutImplTemplateResource extends Template, ClientBundle {
   @Source("com/logikas/samples/errai/client/view/layout/impl/MainLayoutImpl.html") public TextResource getContents(); }
   private void declareBeans_0() {
-    injContext.addBean(CenterActivityManagerProvider.class, CenterActivityManagerProvider.class, inj41207_CenterActivityManagerProvider_creational, inj41206_CenterActivityManagerProvider, arrayOf_19635043Annotation_28758915, null, true);
-    injContext.addBean(Provider.class, CenterActivityManagerProvider.class, inj41207_CenterActivityManagerProvider_creational, inj41206_CenterActivityManagerProvider, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(DataBinderProvider.class, DataBinderProvider.class, inj41208_DataBinderProvider_creational, inj41192_DataBinderProvider, arrayOf_19635043Annotation_28758915, null, true);
-    injContext.addBean(ContextualTypeProvider.class, DataBinderProvider.class, inj41208_DataBinderProvider_creational, inj41192_DataBinderProvider, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(RequestDispatcherProvider.class, RequestDispatcherProvider.class, inj41209_RequestDispatcherProvider_creational, inj41186_RequestDispatcherProvider, arrayOf_19635043Annotation_28758915, null, true);
-    injContext.addBean(Provider.class, RequestDispatcherProvider.class, inj41209_RequestDispatcherProvider_creational, inj41186_RequestDispatcherProvider, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(InstanceProvider.class, InstanceProvider.class, inj41210_InstanceProvider_creational, inj41194_InstanceProvider, arrayOf_19635043Annotation_28758915, null, true);
-    injContext.addBean(ContextualTypeProvider.class, InstanceProvider.class, inj41210_InstanceProvider_creational, inj41194_InstanceProvider, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(RootPanelProvider.class, RootPanelProvider.class, inj41212_RootPanelProvider_creational, inj41188_RootPanelProvider, arrayOf_19635043Annotation_28758915, null, true);
-    injContext.addBean(Provider.class, RootPanelProvider.class, inj41212_RootPanelProvider_creational, inj41188_RootPanelProvider, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(IOCBeanManagerProvider.class, IOCBeanManagerProvider.class, inj41213_IOCBeanManagerProvider_creational, inj41190_IOCBeanManagerProvider, arrayOf_19635043Annotation_28758915, null, true);
-    injContext.addBean(Provider.class, IOCBeanManagerProvider.class, inj41213_IOCBeanManagerProvider_creational, inj41190_IOCBeanManagerProvider, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(MessageBusProvider.class, MessageBusProvider.class, inj41214_MessageBusProvider_creational, inj41184_MessageBusProvider, arrayOf_19635043Annotation_28758915, null, true);
-    injContext.addBean(Provider.class, MessageBusProvider.class, inj41214_MessageBusProvider_creational, inj41184_MessageBusProvider, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(MVPInitializer.class, MVPInitializer.class, inj41215_MVPInitializer_creational, inj41211_MVPInitializer, arrayOf_19635043Annotation_28758915, null, true);
-    injContext.addBean(App.class, App.class, inj41217_App_creational, inj41216_App, arrayOf_19635043Annotation_28758915, null, true);
-    injContext.addBean(EventProvider.class, EventProvider.class, inj41218_EventProvider_creational, inj41198_EventProvider, arrayOf_19635043Annotation_28758915, null, true);
-    injContext.addBean(ContextualTypeProvider.class, EventProvider.class, inj41218_EventProvider_creational, inj41198_EventProvider, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(SenderProvider.class, SenderProvider.class, inj41219_SenderProvider_creational, inj41204_SenderProvider, arrayOf_19635043Annotation_28758915, null, true);
-    injContext.addBean(ContextualTypeProvider.class, SenderProvider.class, inj41219_SenderProvider_creational, inj41204_SenderProvider, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(InitBallotProvider.class, InitBallotProvider.class, inj41220_InitBallotProvider_creational, inj41196_InitBallotProvider, arrayOf_19635043Annotation_28758915, null, true);
-    injContext.addBean(ContextualTypeProvider.class, InitBallotProvider.class, inj41220_InitBallotProvider_creational, inj41196_InitBallotProvider, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(PageLayoutImpl.class, PageLayoutImpl.class, inj41223_PageLayoutImpl_creational, null, arrayOf_19635043Annotation_28758915, null, true);
-    injContext.addBean(HomePageImpl.class, HomePageImpl.class, inj41224_HomePageImpl_creational, null, arrayOf_19635043Annotation_28758915, null, true);
-    injContext.addBean(HomePage.class, HomePageImpl.class, inj41224_HomePageImpl_creational, null, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(PageLayoutImpl.class, HomePageImpl.class, inj41224_HomePageImpl_creational, null, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(PageLayout.class, HomePageImpl.class, inj41224_HomePageImpl_creational, null, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(IsWidget.class, HomePageImpl.class, inj41224_HomePageImpl_creational, null, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(Composite.class, HomePageImpl.class, inj41224_HomePageImpl_creational, null, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(IsRenderable.class, HomePageImpl.class, inj41224_HomePageImpl_creational, null, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(Widget.class, HomePageImpl.class, inj41224_HomePageImpl_creational, null, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(EventListener.class, HomePageImpl.class, inj41224_HomePageImpl_creational, null, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(HasAttachHandlers.class, HomePageImpl.class, inj41224_HomePageImpl_creational, null, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(HasHandlers.class, HomePageImpl.class, inj41224_HomePageImpl_creational, null, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(UIObject.class, HomePageImpl.class, inj41224_HomePageImpl_creational, null, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(HasVisibility.class, HomePageImpl.class, inj41224_HomePageImpl_creational, null, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(CenterActivityMapper.class, CenterActivityMapper.class, inj41226_CenterActivityMapper_creational, inj41225_CenterActivityMapper, arrayOf_19635043Annotation_28758915, null, true);
-    injContext.addBean(ActivityMapper.class, CenterActivityMapper.class, inj41226_CenterActivityMapper_creational, inj41225_CenterActivityMapper, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(CallerProvider.class, CallerProvider.class, inj41227_CallerProvider_creational, inj41200_CallerProvider, arrayOf_19635043Annotation_28758915, null, true);
-    injContext.addBean(ContextualTypeProvider.class, CallerProvider.class, inj41227_CallerProvider_creational, inj41200_CallerProvider, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(LoginUserWidget.class, LoginUserWidget.class, inj41229_LoginUserWidget_creational, inj41228_LoginUserWidget, arrayOf_19635043Annotation_29684577, null, true);
-    injContext.addBean(LoginUserView.class, LoginUserWidget.class, inj41229_LoginUserWidget_creational, inj41228_LoginUserWidget, arrayOf_19635043Annotation_29684577, null, false);
-    injContext.addBean(IsWidget.class, LoginUserWidget.class, inj41229_LoginUserWidget_creational, inj41228_LoginUserWidget, arrayOf_19635043Annotation_29684577, null, false);
-    injContext.addBean(LoginActivity.class, LoginActivity.class, inj41231_LoginActivity_creational, null, arrayOf_19635043Annotation_28758915, null, true);
-    injContext.addBean(Presenter.class, LoginActivity.class, inj41231_LoginActivity_creational, null, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(AbstractActivity.class, LoginActivity.class, inj41231_LoginActivity_creational, null, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(Activity.class, LoginActivity.class, inj41231_LoginActivity_creational, null, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(MainLayoutImpl.class, MainLayoutImpl.class, inj41233_MainLayoutImpl_creational, inj41232_MainLayoutImpl, arrayOf_19635043Annotation_28758915, null, true);
-    injContext.addBean(Composite.class, MainLayoutImpl.class, inj41233_MainLayoutImpl_creational, inj41232_MainLayoutImpl, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(IsRenderable.class, MainLayoutImpl.class, inj41233_MainLayoutImpl_creational, inj41232_MainLayoutImpl, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(Widget.class, MainLayoutImpl.class, inj41233_MainLayoutImpl_creational, inj41232_MainLayoutImpl, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(EventListener.class, MainLayoutImpl.class, inj41233_MainLayoutImpl_creational, inj41232_MainLayoutImpl, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(HasAttachHandlers.class, MainLayoutImpl.class, inj41233_MainLayoutImpl_creational, inj41232_MainLayoutImpl, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(HasHandlers.class, MainLayoutImpl.class, inj41233_MainLayoutImpl_creational, inj41232_MainLayoutImpl, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(IsWidget.class, MainLayoutImpl.class, inj41233_MainLayoutImpl_creational, inj41232_MainLayoutImpl, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(UIObject.class, MainLayoutImpl.class, inj41233_MainLayoutImpl_creational, inj41232_MainLayoutImpl, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(HasVisibility.class, MainLayoutImpl.class, inj41233_MainLayoutImpl_creational, inj41232_MainLayoutImpl, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(ListWidgetProvider.class, ListWidgetProvider.class, inj41234_ListWidgetProvider_creational, inj41182_ListWidgetProvider, arrayOf_19635043Annotation_28758915, null, true);
-    injContext.addBean(ContextualTypeProvider.class, ListWidgetProvider.class, inj41234_ListWidgetProvider_creational, inj41182_ListWidgetProvider, arrayOf_19635043Annotation_28758915, null, false);
-    injContext.addBean(DisposerProvider.class, DisposerProvider.class, inj41235_DisposerProvider_creational, inj41202_DisposerProvider, arrayOf_19635043Annotation_28758915, null, true);
-    injContext.addBean(ContextualTypeProvider.class, DisposerProvider.class, inj41235_DisposerProvider_creational, inj41202_DisposerProvider, arrayOf_19635043Annotation_28758915, null, false);
+    injContext.addBean(CenterActivityManagerProvider.class, CenterActivityManagerProvider.class, inj4110_CenterActivityManagerProvider_creational, inj4109_CenterActivityManagerProvider, arrayOf_19635043Annotation_30012296, null, true);
+    injContext.addBean(Provider.class, CenterActivityManagerProvider.class, inj4110_CenterActivityManagerProvider_creational, inj4109_CenterActivityManagerProvider, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(DataBinderProvider.class, DataBinderProvider.class, inj4111_DataBinderProvider_creational, inj4095_DataBinderProvider, arrayOf_19635043Annotation_30012296, null, true);
+    injContext.addBean(ContextualTypeProvider.class, DataBinderProvider.class, inj4111_DataBinderProvider_creational, inj4095_DataBinderProvider, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(RequestDispatcherProvider.class, RequestDispatcherProvider.class, inj4112_RequestDispatcherProvider_creational, inj4089_RequestDispatcherProvider, arrayOf_19635043Annotation_30012296, null, true);
+    injContext.addBean(Provider.class, RequestDispatcherProvider.class, inj4112_RequestDispatcherProvider_creational, inj4089_RequestDispatcherProvider, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(InstanceProvider.class, InstanceProvider.class, inj4113_InstanceProvider_creational, inj4097_InstanceProvider, arrayOf_19635043Annotation_30012296, null, true);
+    injContext.addBean(ContextualTypeProvider.class, InstanceProvider.class, inj4113_InstanceProvider_creational, inj4097_InstanceProvider, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(RootPanelProvider.class, RootPanelProvider.class, inj4114_RootPanelProvider_creational, inj4091_RootPanelProvider, arrayOf_19635043Annotation_30012296, null, true);
+    injContext.addBean(Provider.class, RootPanelProvider.class, inj4114_RootPanelProvider_creational, inj4091_RootPanelProvider, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(IOCBeanManagerProvider.class, IOCBeanManagerProvider.class, inj4115_IOCBeanManagerProvider_creational, inj4093_IOCBeanManagerProvider, arrayOf_19635043Annotation_30012296, null, true);
+    injContext.addBean(Provider.class, IOCBeanManagerProvider.class, inj4115_IOCBeanManagerProvider_creational, inj4093_IOCBeanManagerProvider, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(MessageBusProvider.class, MessageBusProvider.class, inj4116_MessageBusProvider_creational, inj4087_MessageBusProvider, arrayOf_19635043Annotation_30012296, null, true);
+    injContext.addBean(Provider.class, MessageBusProvider.class, inj4116_MessageBusProvider_creational, inj4087_MessageBusProvider, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(App.class, App.class, inj4118_App_creational, inj4117_App, arrayOf_19635043Annotation_30012296, null, true);
+    injContext.addBean(EventProvider.class, EventProvider.class, inj4119_EventProvider_creational, inj4101_EventProvider, arrayOf_19635043Annotation_30012296, null, true);
+    injContext.addBean(ContextualTypeProvider.class, EventProvider.class, inj4119_EventProvider_creational, inj4101_EventProvider, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(SenderProvider.class, SenderProvider.class, inj4120_SenderProvider_creational, inj4107_SenderProvider, arrayOf_19635043Annotation_30012296, null, true);
+    injContext.addBean(ContextualTypeProvider.class, SenderProvider.class, inj4120_SenderProvider_creational, inj4107_SenderProvider, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(InitBallotProvider.class, InitBallotProvider.class, inj4121_InitBallotProvider_creational, inj4099_InitBallotProvider, arrayOf_19635043Annotation_30012296, null, true);
+    injContext.addBean(ContextualTypeProvider.class, InitBallotProvider.class, inj4121_InitBallotProvider_creational, inj4099_InitBallotProvider, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(PageLayoutImpl.class, PageLayoutImpl.class, inj4124_PageLayoutImpl_creational, null, arrayOf_19635043Annotation_30012296, null, true);
+    injContext.addBean(HomePageImpl.class, HomePageImpl.class, inj4125_HomePageImpl_creational, null, arrayOf_19635043Annotation_30012296, null, true);
+    injContext.addBean(HomePage.class, HomePageImpl.class, inj4125_HomePageImpl_creational, null, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(PageLayoutImpl.class, HomePageImpl.class, inj4125_HomePageImpl_creational, null, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(PageLayout.class, HomePageImpl.class, inj4125_HomePageImpl_creational, null, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(IsWidget.class, HomePageImpl.class, inj4125_HomePageImpl_creational, null, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(Composite.class, HomePageImpl.class, inj4125_HomePageImpl_creational, null, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(IsRenderable.class, HomePageImpl.class, inj4125_HomePageImpl_creational, null, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(Widget.class, HomePageImpl.class, inj4125_HomePageImpl_creational, null, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(EventListener.class, HomePageImpl.class, inj4125_HomePageImpl_creational, null, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(HasAttachHandlers.class, HomePageImpl.class, inj4125_HomePageImpl_creational, null, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(HasHandlers.class, HomePageImpl.class, inj4125_HomePageImpl_creational, null, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(UIObject.class, HomePageImpl.class, inj4125_HomePageImpl_creational, null, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(HasVisibility.class, HomePageImpl.class, inj4125_HomePageImpl_creational, null, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(CenterActivityMapper.class, CenterActivityMapper.class, inj4127_CenterActivityMapper_creational, inj4126_CenterActivityMapper, arrayOf_19635043Annotation_30012296, null, true);
+    injContext.addBean(ActivityMapper.class, CenterActivityMapper.class, inj4127_CenterActivityMapper_creational, inj4126_CenterActivityMapper, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(CallerProvider.class, CallerProvider.class, inj4128_CallerProvider_creational, inj4103_CallerProvider, arrayOf_19635043Annotation_30012296, null, true);
+    injContext.addBean(ContextualTypeProvider.class, CallerProvider.class, inj4128_CallerProvider_creational, inj4103_CallerProvider, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(LoginUserWidget.class, LoginUserWidget.class, inj4130_LoginUserWidget_creational, inj4129_LoginUserWidget, arrayOf_19635043Annotation_11096404, null, true);
+    injContext.addBean(LoginUserView.class, LoginUserWidget.class, inj4130_LoginUserWidget_creational, inj4129_LoginUserWidget, arrayOf_19635043Annotation_11096404, null, false);
+    injContext.addBean(IsWidget.class, LoginUserWidget.class, inj4130_LoginUserWidget_creational, inj4129_LoginUserWidget, arrayOf_19635043Annotation_11096404, null, false);
+    injContext.addBean(LoginActivity.class, LoginActivity.class, inj4132_LoginActivity_creational, null, arrayOf_19635043Annotation_30012296, null, true);
+    injContext.addBean(Presenter.class, LoginActivity.class, inj4132_LoginActivity_creational, null, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(AbstractActivity.class, LoginActivity.class, inj4132_LoginActivity_creational, null, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(Activity.class, LoginActivity.class, inj4132_LoginActivity_creational, null, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(MainLayoutImpl.class, MainLayoutImpl.class, inj4134_MainLayoutImpl_creational, inj4133_MainLayoutImpl, arrayOf_19635043Annotation_30012296, null, true);
+    injContext.addBean(Composite.class, MainLayoutImpl.class, inj4134_MainLayoutImpl_creational, inj4133_MainLayoutImpl, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(IsRenderable.class, MainLayoutImpl.class, inj4134_MainLayoutImpl_creational, inj4133_MainLayoutImpl, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(Widget.class, MainLayoutImpl.class, inj4134_MainLayoutImpl_creational, inj4133_MainLayoutImpl, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(EventListener.class, MainLayoutImpl.class, inj4134_MainLayoutImpl_creational, inj4133_MainLayoutImpl, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(HasAttachHandlers.class, MainLayoutImpl.class, inj4134_MainLayoutImpl_creational, inj4133_MainLayoutImpl, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(HasHandlers.class, MainLayoutImpl.class, inj4134_MainLayoutImpl_creational, inj4133_MainLayoutImpl, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(IsWidget.class, MainLayoutImpl.class, inj4134_MainLayoutImpl_creational, inj4133_MainLayoutImpl, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(UIObject.class, MainLayoutImpl.class, inj4134_MainLayoutImpl_creational, inj4133_MainLayoutImpl, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(HasVisibility.class, MainLayoutImpl.class, inj4134_MainLayoutImpl_creational, inj4133_MainLayoutImpl, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(ListWidgetProvider.class, ListWidgetProvider.class, inj4135_ListWidgetProvider_creational, inj4085_ListWidgetProvider, arrayOf_19635043Annotation_30012296, null, true);
+    injContext.addBean(ContextualTypeProvider.class, ListWidgetProvider.class, inj4135_ListWidgetProvider_creational, inj4085_ListWidgetProvider, arrayOf_19635043Annotation_30012296, null, false);
+    injContext.addBean(MVPInitializer.class, MVPInitializer.class, inj4137_MVPInitializer_creational, inj4136_MVPInitializer, arrayOf_19635043Annotation_30012296, null, true);
+    injContext.addBean(DisposerProvider.class, DisposerProvider.class, inj4138_DisposerProvider_creational, inj4105_DisposerProvider, arrayOf_19635043Annotation_30012296, null, true);
+    injContext.addBean(ContextualTypeProvider.class, DisposerProvider.class, inj4138_DisposerProvider_creational, inj4105_DisposerProvider, arrayOf_19635043Annotation_30012296, null, false);
   }
-
-  private native static void _$295373500_activityInitializer(App instance, MVPInitializer value) /*-{
-    instance.@com.logikas.samples.errai.client.local.App::activityInitializer = value;
-  }-*/;
 
   private native static void _$1300398733_beanManager(DisposerProvider instance, IOCBeanManager value) /*-{
     instance.@org.jboss.errai.ioc.client.api.builtin.DisposerProvider::beanManager = value;
   }-*/;
 
-  private native static void _$1880957021_centerActivityManager(MVPInitializer instance, Instance value) /*-{
-    instance.@com.logikas.samples.errai.client.presenter.configure.MVPInitializer::centerActivityManager = value;
+  private native static void _$295373500_eventBus(App instance, Provider value) /*-{
+    instance.@com.logikas.samples.errai.client.local.App::eventBus = value;
   }-*/;
 
-  private native static void _$1880957021_bus(MVPInitializer instance, Provider value) /*-{
-    instance.@com.logikas.samples.errai.client.presenter.configure.MVPInitializer::bus = value;
-  }-*/;
-
-  private native static void _$1880957021_actMapper(MVPInitializer instance, Provider value) /*-{
-    instance.@com.logikas.samples.errai.client.presenter.configure.MVPInitializer::actMapper = value;
-  }-*/;
-
-  public native static void _$1880957021_init(MVPInitializer instance) /*-{
-    instance.@com.logikas.samples.errai.client.presenter.configure.MVPInitializer::init()();
+  public native static EventBus _$295373500_produceMyBean(App instance) /*-{
+    return instance.@com.logikas.samples.errai.client.local.App::produceMyBean()();
   }-*/;
 
   public native static void _$1378313608_init(LoginActivity instance) /*-{
     instance.@com.logikas.samples.errai.client.presenter.LoginActivity::init()();
   }-*/;
 
+  public native static void _$1880957021_init(MVPInitializer instance) /*-{
+    instance.@com.logikas.samples.errai.client.presenter.configure.MVPInitializer::init()();
+  }-*/;
+
   // The main IOC bootstrap method.
   public BootstrapperInjectionContext bootstrapContainer() {
-    final CreationalCallback<EventBus> var234 = new CreationalCallback<EventBus>() {
+    final CreationalCallback<EventBus> var32 = new CreationalCallback<EventBus>() {
       public EventBus getInstance(CreationalContext pContext) {
-        EventBus var234 = inj41211_MVPInitializer.getEventBus();
-        context.addBean(context.getBeanReference(EventBus.class, arrayOf_19635043Annotation_28758915), var234);
-        return var234;
+        EventBus var32 = inj4136_MVPInitializer.getEventBus();
+        context.addBean(context.getBeanReference(EventBus.class, arrayOf_19635043Annotation_30012296), var32);
+        return var32;
+      }
+    };
+    final CreationalCallback<EventBus> var33 = new CreationalCallback<EventBus>() {
+      public EventBus getInstance(CreationalContext pContext) {
+        EventBus var33 = _$295373500_produceMyBean(inj4117_App);
+        context.addBean(context.getBeanReference(EventBus.class, arrayOf_19635043Annotation_30012296), var33);
+        return var33;
+      }
+    };
+    final CreationalCallback<EventBus> var34 = new CreationalCallback<EventBus>() {
+      public EventBus getInstance(CreationalContext pContext) {
+        EventBus var34 = inj4136_MVPInitializer.getEventBus();
+        context.addBean(context.getBeanReference(EventBus.class, arrayOf_19635043Annotation_30012296), var34);
+        return var34;
+      }
+    };
+    final CreationalCallback<EventBus> var35 = new CreationalCallback<EventBus>() {
+      public EventBus getInstance(CreationalContext pContext) {
+        EventBus var35 = _$295373500_produceMyBean(inj4117_App);
+        context.addBean(context.getBeanReference(EventBus.class, arrayOf_19635043Annotation_30012296), var35);
+        return var35;
       }
     };
     declareBeans_0();

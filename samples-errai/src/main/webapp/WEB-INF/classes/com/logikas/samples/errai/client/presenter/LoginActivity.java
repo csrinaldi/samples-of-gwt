@@ -32,6 +32,7 @@ import javax.inject.Singleton;
  *
  */
 
+@Dependent
 public class LoginActivity extends AbstractActivity implements LoginUserView.Presenter {
 
     final private LoginUserView view;

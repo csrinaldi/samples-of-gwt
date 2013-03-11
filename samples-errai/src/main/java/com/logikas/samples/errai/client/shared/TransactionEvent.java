@@ -13,18 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.logikas.samples.errai.client.presenter.configure;
+package com.logikas.samples.errai.client.shared;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import javax.inject.Qualifier;
-
-@Qualifier
-@Documented
-@Retention(RetentionPolicy.RUNTIME) @Target({ElementType.TYPE, ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.LOCAL_VARIABLE})
-public @interface ActivityCenter {
+/**
+ *
+ * @author cristian
+ */
+public class TransactionEvent {
     
+    private String name;
+
+    public TransactionEvent() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
