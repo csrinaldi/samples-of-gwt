@@ -21,13 +21,14 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.place.shared.PlaceHistoryHandler;
+import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.logikas.samples.errai.client.place.LoginPlace;
-import com.logikas.samples.errai.client.presenter.LoginActivity;
+import com.logikas.samples.errai.client.place.configure.AppPlaceHistoryMapper;
 import javax.annotation.PostConstruct;
-import javax.enterprise.inject.Instance;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.inject.Singleton;
 
 /**
@@ -35,52 +36,67 @@ import javax.inject.Singleton;
  * @author cristian
  */
 @Singleton
+@Dependent
 public class MVPInitializer {
 
-    /*@Produces
+    @Inject
+    private EventBus bus;
+    @Inject
+    private PlaceController controller;
+    @Inject 
+    private CenterActivityMapper mapper;
+    @Inject
+    @CenterRegion
+    private ActivityManager centerActivityManager;
+    @Inject
+    private PlaceHistoryHandler historyHandler;
+    
+    @Inject
+    private PlaceHistoryMapper historyMapper;
+
+    @Produces
     @Singleton
-    public ActivityManager getCenterActivityManager(){
-        GWT.log("AAAA");
-        ActivityManager am = new ActivityManager(null, null);
-        return am;
-    }*/
+    public PlaceHistoryHandler getHistoryHandler(){
+        PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
+        historyHandler.register(controller, bus, new LoginPlace());
+        return historyHandler;
+    }
     
     @Produces
     @Singleton
-    public EventBus getEventBus(){
+    public EventBus getEventBus() {
         return new SimpleEventBus();
     }
     
     @Produces
     @Singleton
-    public PlaceController getPlaceController(EventBus eventBus){
+    public PlaceHistoryMapper getHistoryMapper(){
+        return new AppPlaceHistoryMapper();
+    }
+
+    @Produces
+    @Singleton
+    public PlaceController getPlaceController(EventBus eventBus) {
         return new PlaceController(eventBus);
     }
-    
-    @Inject
-    private Provider<CenterActivityMapper> actMapper;
-    
-    @Inject
-    private Provider<EventBus> bus;
-    
-    //@Inject
-    //private Provider<ActivityManager> centerActivitymanager;
-    
-    @Inject
-    private Instance<ActivityManager> centerActivityManager;
 
-    @PostConstruct
-    private void init(){
-        CenterActivityMapper am = Preconditions.checkNotNull(actMapper.get(), "CenterActivityMapper is Null");
-        LoginActivity a = (LoginActivity) am.getActivity(new LoginPlace());
-        a.start(null, null);
-        
-        //EventBus b = Preconditions.checkNotNull(bus.get(), "Event Buss is Null");
-        ActivityManager actManager = Preconditions.checkNotNull(centerActivityManager.get(), "CenterActivityManager is Null");
-        
-        
+    @Produces
+    @Singleton
+    @CenterRegion
+    public ActivityManager getCenterActivityManager() {
+        ActivityManager am = new ActivityManager(mapper, bus);
+        return am;
     }
     
-    
-    
+    @PostConstruct
+    private void init() {
+        EventBus b = Preconditions.checkNotNull(bus, "Event Buss is Null");
+        GWT.log(b.toString());
+
+        PlaceController c = Preconditions.checkNotNull(controller, "PlaceController is Null");
+        GWT.log(c.getWhere().toString());
+
+        ActivityManager cam = Preconditions.checkNotNull(centerActivityManager, "ActivityManager is Null");
+        GWT.log(cam.getClass().toString());
+    }
 }

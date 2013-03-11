@@ -17,10 +17,13 @@ package com.logikas.samples.errai.client.presenter.configure;
 
 import com.google.common.base.Preconditions;
 import com.google.gwt.activity.shared.ActivityManager;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.place.shared.PlaceController;
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.Dependent;
+import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -30,31 +33,48 @@ import javax.inject.Singleton;
  * @author cristian
  */
 @Singleton
+@Dependent
 public class MVPInitializer {
-    
+
+    @Inject
+    private EventBus bus;
+    @Inject
+    private PlaceController controller;
+    @Inject 
+    private CenterActivityMapper mapper;
     @Inject
     @ActivityCenter
-    private ActivityManager centerManager;
-    
+    private ActivityManager centerActivityManager;
+
     @Produces
     @Singleton
-    public EventBus getEventBus(){
+    public EventBus getEventBus() {
         return new SimpleEventBus();
     }
-    
+
     @Produces
     @Singleton
-    public PlaceController getPlaceController(EventBus eventBus){
+    public PlaceController getPlaceController(EventBus eventBus) {
         return new PlaceController(eventBus);
     }
 
-    @PostConstruct
-    private void init(EventBus bus, PlaceController controller){
-        EventBus busInstance = Preconditions.checkNotNull(bus, "EventBuss is Null");
-        ActivityManager am = Preconditions.checkNotNull(centerManager, "CenterManager is Null");
-        PlaceController pc = Preconditions.checkNotNull(controller, "PlaceController is Null");
+    @Produces
+    @Singleton
+    @ActivityCenter
+    public ActivityManager getCenterActivityManager() {
+        ActivityManager am = new ActivityManager(mapper, bus);
+        return am;
     }
     
-    
-    
+    @PostConstruct
+    private void init() {
+        EventBus b = Preconditions.checkNotNull(bus, "Event Buss is Null");
+        GWT.log(b.toString());
+
+        PlaceController c = Preconditions.checkNotNull(controller, "PlaceController is Null");
+        GWT.log(c.getWhere().toString());
+
+        ActivityManager cam = Preconditions.checkNotNull(centerActivityManager, "ActivityManager is Null");
+        cam.getClass().toString();
+    }
 }

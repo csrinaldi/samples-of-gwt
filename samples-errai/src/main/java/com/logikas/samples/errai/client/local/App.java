@@ -26,7 +26,6 @@ public class App {
 
     @Inject
     private MVPInitializer activityInitializer;
-    
 
     @PostConstruct
     public void init() {

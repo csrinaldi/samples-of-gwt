@@ -1,0 +1,74 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+             xmlns:d="urn:import:com.dinaru.client.view.impl">
+
+    <ui:style>
+        .header{
+        margin-bottom: 0px;
+        background-color: black;
+        background-image: none
+        color: black;
+        height:50px;
+        }
+        
+        .popupPanel{
+            opacity:100;
+            filter:alpha(opacity=100);
+            width:0px;
+            height:0px;
+            z-index:99999999999999;
+        }
+        
+    </ui:style>
+    
+    <g:HTMLPanel>
+        <b:FluidContainer ui:field="container">
+            <b:FluidRow>
+                <b:ResponsiveNavbar ui:field="responsiveNavbar">
+                    <b:Brand>Development Version - Dinaru</b:Brand>
+                    <b:Nav>
+                        <b:NavLink active="true" ui:field="homeButton">Inicio</b:NavLink>
+                    </b:Nav>
+                    
+                    <b:Nav>
+                        <b:NavLink ui:field="objetiveButton">Objetivos</b:NavLink>
+                    </b:Nav>
+                    <b:Nav>
+                        <b:NavLink ui:field="movementsButton">Movimientos</b:NavLink>
+                    </b:Nav>
+                    <b:Nav>
+                        <b:NavLink ui:field="analysisButton">Analisis</b:NavLink>
+                    </b:Nav>
+                    <b:Nav>
+                        <b:NavLink ui:field="savingButton">Ahorro</b:NavLink>
+                    </b:Nav>
+                    <b:Nav>
+                        <b:NavLink ui:field="transactionsButton">Transacciones</b:NavLink>
+                    </b:Nav>
+                    <b:Nav>
+                        <b:NavLink ui:field="accountsButton">Cuentas</b:NavLink>
+                    </b:Nav>
+                    <b:NavCollapse ui:field="navLogin">
+                        <b:Nav alignment="RIGHT">
+                            <b:DropdownContainer text="Ingresar">
+                                <d:LoginUserWidget ui:field="loginUserWidget"/>
+                            </b:DropdownContainer>
+                        </b:Nav>
+                    </b:NavCollapse>
+                    <b:Nav ui:field="navLogout" alignment="RIGHT">
+                        <b:NavLink ui:field="buttonLogout">Desconectarse</b:NavLink>
+                    </b:Nav>
+                    <b:Nav ui:field="navSingUp" alignment="RIGHT">
+                        <b:NavLink ui:field="buttonRegister">Registrarse</b:NavLink>
+                    </b:Nav>
+                </b:ResponsiveNavbar>
+            </b:FluidRow>
+            <b:FluidRow>
+                <g:ScrollPanel ui:field="center"/>
+                <g:ScrollPanel ui:field="popupRegion" addStyleNames="{style.popupPanel}"/>
+            </b:FluidRow>
+        </b:FluidContainer>
+    </g:HTMLPanel>
+</ui:UiBinder> 

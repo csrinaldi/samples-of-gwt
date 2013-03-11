@@ -15,16 +15,21 @@
  */
 package com.logikas.samples.errai.client.presenter.configure;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import javax.inject.Qualifier;
+/**
+ *
+ * @author cristian
+ */
+//@IOCProvider
+//@Singleton
+//@ActivityCenter
+public class CenterActivityManagerProvider /*implements Provider<ActivityManager>*/ {
+    /*@Inject
+    private EventBus bus;
+    @Inject
+    private CenterActivityMapper mapper;
 
-@Qualifier
-@Documented
-@Retention(RetentionPolicy.RUNTIME) @Target({ElementType.TYPE, ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.LOCAL_VARIABLE})
-public @interface ActivityCenter {
-    
+    @Override
+    public ActivityManager get() {
+        return new ActivityManager(mapper, bus);
+    }*/
 }
