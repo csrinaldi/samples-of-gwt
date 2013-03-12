@@ -55,6 +55,12 @@
             <artifactId>errai-bus</artifactId>
             <version>${errai.version}</version>
         </dependency>
+        
+         <dependency>
+            <groupId>org.jboss.errai</groupId>
+            <artifactId>errai-uibinder</artifactId>
+            <version>${errai.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.jboss.errai</groupId>

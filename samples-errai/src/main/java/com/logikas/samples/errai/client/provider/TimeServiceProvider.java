@@ -15,7 +15,7 @@
  */
 package com.logikas.samples.errai.client.provider;
 
-import com.logikas.samples.errai.client.presenter.configure.TimeService;
+import com.logikas.samples.errai.client.mvp.presenter.configure.TimeService;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import org.jboss.errai.ioc.client.api.IOCProvider;

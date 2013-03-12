@@ -1,0 +1,168 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+
+    <ui:style>
+        .header{
+        margin-bottom: 0px;
+        background-color: black;
+        background-image: none
+        color: black;
+        height:50px;
+        }
+        
+        .popupPanel{
+        opacity:100;
+        filter:alpha(opacity=100);
+        width:0px;
+        height:0px;
+        z-index:99999999999999;
+        }
+        
+    </ui:style>
+    
+    <g:HTMLPanel>
+        
+
+            <!-- Primary Page Layout
+            ================================================== -->
+	
+            <!-- BEGIN WRAPPER -->
+            <div id="wrapper">
+			
+			
+                <!-- BEGIN HEADER -->
+                <header id="header">
+			
+                    <div class="container clearfix">
+				
+                        <!-- Logo -->
+                        <div id="logo">
+                            <a href="homepage.html#">
+                                <img src="images/logo.png" alt=""></img>
+                            </a>
+                        </div>
+                        <!-- /Logo -->
+				
+                        <!-- Login/Signup -->
+                        <div id="login-btns">
+                            <a href="homepage.html#" class="btn">Log In</a> 
+                            <a href="homepage.html#" class="btn btn-success">Sign Up</a>	
+                        </div>
+                        <!-- /Login/Signup -->
+				
+                        <!-- Top Links -->
+                        <ul class="top-links">
+                            <li>
+                                <a href="homepage.html#">Quienes somos</a>
+                            </li>
+                            <li>
+                                <a href="homepage.html#">Como funciona</a>
+                            </li>
+                        </ul>
+                        <!-- /Top Links -->
+				
+                    </div>
+			
+                </header>
+                <!-- END HEADER -->
+		
+		
+                <!-- BEGIN CONTENT HOLDER -->
+                <div id="content-wrapper">
+			
+                    <div id="featured-wrap">
+                        <!-- Hero Unit -->
+                        <div class="hero">
+                            <h1>Controla tu dinero de forma sencilla y rápida</h1>
+                            <div class="desc">
+                                Toma las riendas de tus finanzas de forma gratuita y rápida. Dinaru hace todo el trabajo de clasificar y organizar tus gastos; para que tu puedas centrarte en tomarbuenas decisiones financieras
+                            </div>
+                            <span class="btn-wrapper">
+                                <a href="homepage.html#" class="btn btn-success btn-super-large">Lets get Started</a>
+                            </span>
+                        </div>
+                        <!--/ Hero Unit -->
+				
+                        <div class="wrap">
+                            <!-- Screen Holder -->
+                            <div class="screen-holder">
+                                <img src="images/main-screen.jpg" height="350" width="902" alt=""></img>
+                            </div>
+                            <!-- /Screen Holder -->
+                        </div>
+                    </div>
+			
+                    <div class="container">
+			
+                        <!-- Features List -->
+                        <ul class="features-list">
+                            <li>
+                                <h2>Las cuentas claras</h2>
+                                <p>En Dinaru creemos que el dinero está para disfrutarlo. Y por eso queremos hacer tu vida lo más fácil y clara posible. Unirte no te llevará más de un minuto, y podrás ver toda tu información financiera en un solo lugar, de forma automática en menos de 5 minutos.</p>
+                            </li>
+					
+                            <li>
+                                <h2>No pierdas el tiempo</h2>
+                                <p>En Dinaru, sabemos que tu tiempo es oro; hijos, trabajo, obligaciones… Y queremos que tu tiempo libre sea precisamente eso, libre; libre de preocupaciones y de quebraderos de cabeza. Por eso, te avísaremos de cualquier uso indebido de tus cuentas o de otras alertas y, además, analizamos automáticamente tus gastos para que controles en todo momento donde va tu dinero.</p>
+                            </li>
+					
+                            <li>
+                                <h2>Logra tus objetivos</h2>
+                                <p>Para ese viaje soñado, eso coche codiciado… Dinaru te ayuda. Fíjate una meta y sigue tu progreso online, conconsejos personalizados para que logres tus objetivos lo más rápido posible.</p>
+                            </li>
+					
+                            <li>
+                                <h2>La seguridad, nuestra mayor virtud</h2>
+                                <p>Sabemos que la privacidad es muy importante para ti, y por eso queremos asegurarte de que tus datos son y siempre serán anónimos y protegidos por las mayores compañías de seguridad del mundo.</p>
+                            </li>
+                        </ul>
+                        <!-- /Features List -->
+				
+                    </div>
+			
+                </div>
+                <!-- END CONTENT HOLDER -->
+		
+		
+                <!-- BEGIN FOOTER -->
+                <footer id="footer">
+			
+                    <div class="container clearfix">
+			
+                        <!-- Quick Message -->
+                        <div class="quick-message-holder">
+                            <form action="#" class="quick-message">
+                                <p class="form-desc">Need help? Send us your questions.</p>
+                                <textarea name="q-textarea" id="q-textarea" cols="30" rows="10"></textarea>
+                                <input type="submit" value="Send" class="full-width"/>
+                            </form>
+                        </div>
+                        <!-- /Quick Message -->
+				
+                        <!-- Footer Info -->
+                        <div class="footer-info">
+                            <img src="images/footer-info.jpg" alt="" class="footer-info-img"></img>
+                            <br></br>
+                                    Dinaru Employs Bank Level Security
+                        </div>
+                        <!-- /Footer Info -->
+				
+				
+                        <!-- Copyright -->
+                        <div class="copyright">
+                            <div class="logo-footer">
+                                <img src="images/logo-footer.png" height="43" width="147" alt=""></img>
+                            </div>
+					&copy; 2013 Dinaru. All rights reserved.
+                        </div>
+                        <!-- /Copyright -->
+                    </div>
+                </footer>
+                <!-- END FOOTER -->
+	
+            </div>
+            <!-- END WRAPPER -->
+    </g:HTMLPanel>
+</ui:UiBinder> 
