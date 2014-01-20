@@ -1,0 +1,95 @@
+<!--
+Uncomment this for XHTML entities
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+-->
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+    <ui:style>
+
+    </ui:style>
+    <g:HTMLPanel>
+        
+        <b:ResponsiveNavbar position="TOP">
+            <b:Brand>Gwt Tutorial</b:Brand>
+            <b:NavCollapse>
+                <!--b:Nav>
+                    <b:NavLink>Test</b:NavLink>
+                    <b:NavText>NavText</b:NavText>
+                    <b:VerticalDivider />
+                    <b:NavLink href="http://www.google.com">Another Test</b:NavLink>
+                    <b:Dropdown text="Dropdown">
+                        <b:NavHeader>Test</b:NavHeader>
+                        <b:NavLink>Test 1</b:NavLink>
+                        <b:NavLink>Test 2</b:NavLink>
+                    </b:Dropdown>
+                    <b:NavWidget icon="STAR" text="Inbox"
+                                 ui:field="inbox">
+                        <b:Badge>1</b:Badge>
+                    </b:NavWidget>
+                </b:Nav>
+                <b:NavForm size="1" />
+                <b:Nav alignment="RIGHT">
+                    <b:NavLink>Test</b:NavLink>
+                </b:Nav>
+                <b:NavText alignment="RIGHT">Right</b:NavText>
+                <b:NavSearch size="2" placeholder="Search" alignment="RIGHT" /!-->
+            </b:NavCollapse>
+        </b:ResponsiveNavbar>
+        
+        <b:Container>
+            <b:PageHeader subtext="Acceda a los cursos de manera gratuita">Catálogo de cursos</b:PageHeader>
+            <b:Row>
+                <b:Column size="8" offset="2">
+                    <b:Thumbnails>
+                        <b:Thumbnail size="4">
+                            <b:Image url="http://www.gwtproject.org/images/logo-wire.png"/>
+                            <b:Caption>
+                                <b:Heading size="3">Tutorial de GWT</b:Heading>
+                                <b:Paragraph>
+                                    Accesa al tutorial en Español de GWT.
+                                    <br/>
+                                    <br/>
+                                </b:Paragraph>
+                                <b:Paragraph>
+                                    <b:Button type="PRIMARY">Acceder</b:Button>
+                                    <b:Button>Consultar</b:Button>
+                                </b:Paragraph>
+                            </b:Caption>
+                        </b:Thumbnail>
+                        <b:Thumbnail size="4">
+                            <b:Image url="http://angularjs.org/img/AngularJS-large.png"/>
+                            <b:Caption>
+                                <b:Heading size="3">Tutorial de Angular</b:Heading>
+                                <b:Paragraph>
+                                    Accesa al tutorial en Español de Angular.
+                                    <br/>
+                                    <br/>
+                                </b:Paragraph>
+                                <b:Paragraph>
+                                    <b:Button type="PRIMARY">Acceder</b:Button>
+                                    <b:Button>Consultar</b:Button>
+                                </b:Paragraph>
+                            </b:Caption>
+                        </b:Thumbnail>
+                        <b:Thumbnail size="4">
+                            <b:Image url="http://design.jboss.org/errai/logo/final/errai_logo_600px.png"/>
+                            <b:Caption>
+                                <b:Heading size="3">Tutorial de Errai</b:Heading>
+                                <b:Paragraph>
+                                    Accesa al tutorial en Español de Errai.
+                                    <br/>
+                                    <br/>
+                                </b:Paragraph>
+                                <b:Paragraph>
+                                    <b:Button type="PRIMARY">Acceder</b:Button>
+                                    <b:Button>Consultar</b:Button>
+                                </b:Paragraph>
+                            </b:Caption>
+                        </b:Thumbnail>
+                    </b:Thumbnails>
+                </b:Column>
+            </b:Row>
+        </b:Container>
+    </g:HTMLPanel>
+</ui:UiBinder>

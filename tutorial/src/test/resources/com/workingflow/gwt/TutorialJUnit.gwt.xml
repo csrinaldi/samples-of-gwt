@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+  <!-- Inherit our applications main module.                      -->
+  <inherits name='com.workingflow.gwt.Tutorial' />
+
+  <!-- Specify the path to any remote services.                   -->
+  <servlet path="/Tutorial/greet" class="com.workingflow.gwt.server.GreetingServiceImpl" />
+
+</module>

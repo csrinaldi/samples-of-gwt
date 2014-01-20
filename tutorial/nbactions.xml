@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-gwt debug</actionName>
+            <displayName>gwt debug</displayName>
+            <goals>
+                <goal>gwt:run</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-gwt super dev mode</actionName>
+            <displayName>gwt super dev mode</displayName>
+            <goals>
+                <goal>gwt:run-codeserver</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-jetty-war</actionName>
+            <displayName>jetty-war</displayName>
+            <goals>
+                <goal>jetty:run-war</goal>
+            </goals>
+        </action>
+    </actions>
