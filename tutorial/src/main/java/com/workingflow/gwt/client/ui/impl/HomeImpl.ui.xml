@@ -1,0 +1,63 @@
+<!--
+Uncomment this for XHTML entities
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+-->
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+    <ui:style>
+
+    </ui:style>
+    <b:Row>
+        <b:PageHeader subtext="Acceda a los cursos de manera gratuita">Catálogo de cursos</b:PageHeader>
+        <b:Column size="8" offset="2">
+            <b:Thumbnails>
+                <b:Thumbnail size="4">
+                    <b:Image url="http://www.gwtproject.org/images/logo-wire.png"/>
+                    <b:Caption>
+                        <b:Heading size="3">Tutorial de GWT</b:Heading>
+                        <b:Paragraph>
+                            Accesa al tutorial en Español de GWT.
+                            <br/>
+                            <br/>
+                        </b:Paragraph>
+                        <b:Paragraph>
+                            <b:Button type="PRIMARY">Acceder</b:Button>
+                            <b:Button>Consultar</b:Button>
+                        </b:Paragraph>
+                    </b:Caption>
+                </b:Thumbnail>
+                <b:Thumbnail size="4">
+                    <b:Image url="http://angularjs.org/img/AngularJS-large.png"/>
+                    <b:Caption>
+                        <b:Heading size="3">Tutorial de Angular</b:Heading>
+                        <b:Paragraph>
+                            Accesa al tutorial en Español de Angular.
+                            <br/>
+                            <br/>
+                        </b:Paragraph>
+                        <b:Paragraph>
+                            <b:Button type="PRIMARY">Acceder</b:Button>
+                            <b:Button>Consultar</b:Button>
+                        </b:Paragraph>
+                    </b:Caption>
+                </b:Thumbnail>
+                <b:Thumbnail size="4">
+                    <b:Image url="http://design.jboss.org/errai/logo/final/errai_logo_600px.png"/>
+                    <b:Caption>
+                        <b:Heading size="3">Tutorial de Errai</b:Heading>
+                        <b:Paragraph>
+                            Accesa al tutorial en Español de Errai.
+                            <br/>
+                            <br/>
+                        </b:Paragraph>
+                        <b:Paragraph>
+                            <b:Button type="PRIMARY">Acceder</b:Button>
+                            <b:Button>Consultar</b:Button>
+                        </b:Paragraph>
+                    </b:Caption>
+                </b:Thumbnail>
+            </b:Thumbnails>
+        </b:Column>
+    </b:Row>
+</ui:UiBinder>

@@ -1,15 +1,15 @@
 package com.workingflow.gwt.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.workingflow.gwt.client.ui.Layout;
-import com.workingflow.gwt.client.ui.impl.LayoutImpl;
+import com.google.gwt.core.client.GWT;
+import com.workingflow.gwt.client.di.CustomGinjector;
 
 public class Tutorial implements EntryPoint {
 
+    private final CustomGinjector injector = GWT.create(CustomGinjector.class);
+    
     public void onModuleLoad() {
-        Layout layout = new LayoutImpl();
-        RootPanel.get().add(layout);
+        injector.getBootstrap().start();
     }
   
 }

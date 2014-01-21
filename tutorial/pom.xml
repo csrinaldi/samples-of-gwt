@@ -34,6 +34,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-elemental</artifactId>
+            <version>${gwtVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.7</version>
@@ -57,6 +63,13 @@
             <artifactId>gwt-bootstrap</artifactId>
             <version>2.3.2.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.gwt.inject</groupId>
+            <artifactId>gin</artifactId>
+            <version>2.1.2</version>
+            <scope>compile</scope>
+        </dependency>
+            
     </dependencies>
 
     <build>
@@ -125,7 +138,7 @@
                     <contextPath>/tutorial</contextPath>
                     <connectors>
                         <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-                            <port>8080</port>
+                            <port>9080</port>
                             <maxIdleTime>60000</maxIdleTime>
                         </connector>
                     </connectors>

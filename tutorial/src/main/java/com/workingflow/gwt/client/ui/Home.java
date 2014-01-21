@@ -6,24 +6,25 @@
 
 package com.workingflow.gwt.client.ui;
 
+import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.SimplePanel;
+import com.workingflow.gwt.client.place.NavigationPresenter;
 
 /**
- * Documentación de {@link Layout}.
+ * Documentación de {@link Home}.
  *
  * @author Cristian Rinaldi <crinaldi@santafe.gov.ar>
  *
  * Sectorial de Informática de Catastro
  */
-public interface Layout extends IsWidget{
+public interface Home extends IsWidget{
 
-    SimplePanel getUnitRegion();
+    interface Presenter extends NavigationPresenter{
+        
+    }
     
-    SimplePanel getContentRegion();
-    
-    void maximiseCenter();
-    
+    void setPresenter(Presenter presenter);
     
     
 }
+
