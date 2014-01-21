@@ -6,11 +6,20 @@ Uncomment this for XHTML entities
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
     <ui:style>
+        
+        .layout-bk{
+        text-shadow: 0 1px 3px rgba(255, 255, 255, 0.4), 0 0 30px rgba(255, 255, 255, 0.075);
+        background: #d9d9d9;
+        background-image: none;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+        }
 
     </ui:style>
-    <g:HTMLPanel>
+    <g:HTMLPanel stylePrimaryName="{style.layout-bk}">
         
-        <b:ResponsiveNavbar position="TOP">
+        <b:ResponsiveNavbar>
             <b:Brand>Gwt Tutorial</b:Brand>
             <b:NavCollapse>
                 <!--b:Nav>
@@ -36,6 +45,15 @@ Uncomment this for XHTML entities
                 <b:NavSearch size="2" placeholder="Search" alignment="RIGHT" /!-->
             </b:NavCollapse>
         </b:ResponsiveNavbar>
+        
+        <header class="jumbotron subhead" id="overview">
+            <b:Container>
+                <g:HTMLPanel>
+                    <h1>Base CSS</h1>
+                    <p class="lead">Fundamental HTML elements styled and enhanced with extensible classes.</p>
+                </g:HTMLPanel>
+            </b:Container>
+        </header>
         
         <b:Container>
             <b:Row>

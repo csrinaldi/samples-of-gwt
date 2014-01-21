@@ -9,8 +9,8 @@ Uncomment this for XHTML entities
 
     </ui:style>
     <b:Row>
-        <b:PageHeader subtext="Acceda a los cursos de manera gratuita">Catálogo de cursos</b:PageHeader>
         <b:Column size="8" offset="2">
+            <b:PageHeader subtext="Acceda a los cursos de manera gratuita">Catálogo de cursos</b:PageHeader>
             <b:Thumbnails>
                 <b:Thumbnail size="4">
                     <b:Image url="http://www.gwtproject.org/images/logo-wire.png"/>

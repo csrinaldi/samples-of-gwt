@@ -6,6 +6,7 @@
 
 package com.workingflow.gwt.client.place.handler;
 
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.google.gwt.place.shared.PlaceController;
@@ -28,9 +29,10 @@ public class PlaceEventHandler implements PlaceChangeEvent.Handler{
     private Place currentPlace = null;
     
     @Inject
-    public PlaceEventHandler(PlaceController controller, Layout layout) {
+    public PlaceEventHandler(PlaceController controller, Layout layout, EventBus eventBus) {
         this.layout = layout;
         this.controller = controller;
+        eventBus.addHandler(PlaceChangeEvent.TYPE, this);
     }
 
     
