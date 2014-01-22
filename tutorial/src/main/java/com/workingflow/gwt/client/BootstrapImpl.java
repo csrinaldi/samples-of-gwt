@@ -49,8 +49,8 @@ public class BootstrapImpl implements Bootstrap {
     @Override
     public void start() {
         activityManager.setDisplay(mainLayout.getContentRegion());
-        RootLayoutPanel.get().add(mainLayout.asWidget());
-        controller.goTo(new HomePlace());
+        //RootLayoutPanel.get().add(mainLayout.asWidget());
+        //controller.goTo(new HomePlace());
         
     }
 

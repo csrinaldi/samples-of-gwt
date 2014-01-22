@@ -5,7 +5,6 @@
  */
 package com.workingflow.gwt.client.di;
 
-import com.github.gwtbootstrap.client.ui.Row;
 import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
@@ -21,7 +20,6 @@ import com.workingflow.gwt.client.activity.CenterActivityMapper;
 import com.workingflow.gwt.client.place.AppPlaceHistoryMapper;
 import com.workingflow.gwt.client.place.HomePlace;
 import com.workingflow.gwt.client.ui.Layout;
-import javax.inject.Named;
 
 /**
  * Documentación de {@link AppModule}.
