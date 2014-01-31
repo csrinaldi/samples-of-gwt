@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+  <!-- Inherit our applications main module.                      -->
+  <inherits name='com.logikas.mvp.Mvp' />
+
+  <!-- Specify the path to any remote services.                   -->
+  <servlet path="/Mvp/greet" class="com.logikas.mvp.server.GreetingServiceImpl" />
+
+</module>

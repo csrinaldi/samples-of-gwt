@@ -1,0 +1,24 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder 
+    xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:l="urn:import:com.logikas.mvp.client.ui.impl">
+	
+    <ui:style>
+        .contactsViewButtonHPanel {
+        margin: 5px 0px 0x 5px;	
+        }
+        .contactsViewContactsFlexTable {
+        margin: 5px 0px 5px 0px; 
+        }
+    </ui:style>
+
+    <g:HTMLPanel>
+        <g:TextBox ui:field="name"></g:TextBox>
+        <g:TextBox ui:field="lastname"></g:TextBox>
+        <l:DepartmentListBox ui:field="departments"></l:DepartmentListBox>
+        <g:Button ui:field="saveButton">Save</g:Button>
+        <g:Button ui:field="cancelButton">Cancel</g:Button>
+    </g:HTMLPanel>
+    
+</ui:UiBinder> 

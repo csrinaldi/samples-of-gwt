@@ -1,0 +1,30 @@
+<!--
+Uncomment this for XHTML entities
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+-->
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+  
+    <ui:style>
+        .contactsViewButtonHPanel {
+        margin: 5px 0px 0x 5px;	
+        }
+        .contactsViewContactsFlexTable {
+        margin: 5px 0px 5px 0px; 
+        }
+    </ui:style>
+
+  
+    <g:HTMLPanel>
+    	<h1>Logikas Eduka - MVP Example</h1>
+        <g:DecoratorPanel>
+            <g:VerticalPanel>
+                <g:HorizontalPanel>
+                    <g:Button ui:field="addButton">Add Employee</g:Button>
+                    <g:Button ui:field="deleteButton">Delete Employee</g:Button>
+                </g:HorizontalPanel>
+            </g:VerticalPanel>
+        </g:DecoratorPanel>
+        
+    </g:HTMLPanel>
+</ui:UiBinder>
