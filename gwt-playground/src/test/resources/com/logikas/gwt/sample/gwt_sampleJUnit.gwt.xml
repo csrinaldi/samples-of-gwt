@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+  <!-- Inherit our applications main module.                      -->
+  <inherits name='com.logikas.gwt.sample.gwt_sample' />
+
+  <!-- Specify the path to any remote services.                   -->
+  <servlet path="/gwt_sample/greet" class="com.logikas.gwt.sample.server.GreetingServiceImpl" />
+
+</module>
