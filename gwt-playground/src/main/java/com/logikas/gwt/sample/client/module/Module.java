@@ -9,7 +9,7 @@ import com.google.gwt.core.client.js.JsProperty;
 import com.google.gwt.core.client.js.JsType;
 
 /**
- *
+ * Interface for Modules definition
  *
  * @author Cristian Rinaldi <a
  * href="mailto:csrinaldi@gmail.com">csrinaldi@gmail.com</a>

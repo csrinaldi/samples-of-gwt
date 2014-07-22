@@ -18,7 +18,7 @@ import com.logikas.gwt.sample.client.module.Module;
  * Logikas
  *
  */
-@JsNamespace(value = "$wnd.com.logikas")
+@JsNamespace(value = "$wnd.Logikas")
 public class ModuleImpl implements Module {
 
     private final String name;

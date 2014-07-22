@@ -61,9 +61,9 @@ public class gwt_sample implements EntryPoint {
     }
 
     public static native void newJSModule()/*-{
-     var module = $wnd.com.logikas.ModuleImpl('jsInterop', '1.0');
-     console.log(module);
-     //console.log(module.version);
+            var module = new $wnd.Logikas.ModuleImpl("m", "1.0.0");
+            console.log(module);
+            console.log(module.getName());
      }-*/;
 
     public static native Document getDocument() /*-{

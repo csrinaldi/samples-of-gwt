@@ -19,5 +19,10 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.3.4",
+    "core-element": "Polymer/core-elements",
+    "paper-element": "Polymer/paper-elements"
+  }
 }
