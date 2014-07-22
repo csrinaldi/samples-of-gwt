@@ -14,6 +14,6 @@ public enum EventType {
     
     @Override
     public String toString() {
-        return "HOLA";
+        return "";
     }
 }
