@@ -1,6 +1,7 @@
 package com.logikas.gwt.sample.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.js.JsProperty;
 import com.google.gwt.core.client.js.JsType;
 
 /**
@@ -8,43 +9,72 @@ import com.google.gwt.core.client.js.JsType;
  */
 public class gwt_sample implements EntryPoint {
 
-    @JsType
-    public interface Document {
-        HTMLElement createElement(String name);
+    @JsType(prototype = "Console")
+    public interface Console {
 
-        public HTMLElement getElementsByTagName(String tag);
+        void log(Object object, String... params);
     }
 
-    @JsType
-    public interface Element{
-        void setAttribute(String attr, String value);
+    @JsType(prototype = "Window")
+    public interface Window {
+
+        @JsProperty(value = "console")
+        Console getConsole();
     }
-    
-    @JsType
-    public interface HTMLElement extends Element{
+
+    @JsType(prototype = "HTMLBodyElement")
+    public interface HTMLBodyElement extends HTMLElement {
+
+    }
+
+    @JsType(prototype = "HTMLElement")
+    public interface HTMLElement {
+
+        public void setAttribute(String align, String center);
 
         public void appendChild(HTMLElement element);
+
     }
-    
-    @JsType
-    public interface HTMLBodyElement extends HTMLElement{
-    }
-    
-    @JsType
-    public interface HTMLDivElement extends HTMLElement{
-        
+
+    @JsType(isNative = true, prototype = "Document")
+    public interface Document {
+
+        public HTMLElement createElement(String div);
+
+        public HTMLElement getElementsByTagName(String body);
+
     }
 
     @Override
     public void onModuleLoad() {
         Document doc = getDocument();
-        HTMLDivElement element = (HTMLDivElement) doc.createElement("DIV");
-        HTMLElement body = doc.getElementsByTagName("BODY");
-        element.setAttribute("align", "center");
-        body.appendChild(element);
+        HTMLElement div = doc.createElement("DIV");
+        HTMLElement p = doc.createElement("P");
+        div.appendChild(p);
+        HTMLBodyElement body = bodyElement();
+        body.appendChild(div);
+
+        window().getConsole().log("%cWelcome to JSInterop!%c", "font-size:1.5em;color:#4558c9;", "color:#d61a7f;font-size:1em;");
+
+        newJSModule();
+
     }
 
+    public static native void newJSModule()/*-{
+     var module = $wnd.com.logikas.ModuleImpl('jsInterop', '1.0');
+     console.log(module);
+     //console.log(module.version);
+     }-*/;
+
     public static native Document getDocument() /*-{
-     return $doc;
+     return $wnd.document;
+     }-*/;
+
+    public static native HTMLBodyElement bodyElement() /*-{
+     return $wnd.document.body;
+     }-*/;
+
+    public static native Window window() /*-{
+     return $wnd;
      }-*/;
 }
