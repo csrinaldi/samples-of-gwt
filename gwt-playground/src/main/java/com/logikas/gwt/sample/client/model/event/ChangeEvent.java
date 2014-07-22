@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.logikas.gwt.sample.client.model;
+package com.logikas.gwt.sample.client.model.event;
 
 import com.logikas.gwt.sample.client.gwt_sample;
 
@@ -12,10 +12,13 @@ import com.logikas.gwt.sample.client.gwt_sample;
  *
  * @author devuser
  */
-public class ObservableModel implements gwt_sample.JsObject{
 
-    public static void observe(gwt_sample.JsObject obj, Handler<?> callback){
-        gwt_sample.window().getConsole().log(obj, "");
-    }
+public interface ChangeEvent extends gwt_sample.JsObject{
+    
+    String getName();
+    
+    gwt_sample.JsObject getObject();
+    
+    String getType();
     
 }

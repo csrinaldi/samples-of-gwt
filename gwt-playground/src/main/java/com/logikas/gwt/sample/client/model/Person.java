@@ -37,5 +37,7 @@ public class Person implements gwt_sample.JsObject {
     public void setName(String name) {
         this.name = name;
     }
+    
+    
 
 }

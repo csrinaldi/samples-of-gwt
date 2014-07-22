@@ -4,7 +4,8 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.js.JsProperty;
 import com.google.gwt.core.client.js.JsType;
 import com.logikas.gwt.sample.client.model.Employee;
-import com.logikas.gwt.sample.client.model.ObservableModel;
+import com.logikas.gwt.sample.client.model.Handler;
+import com.logikas.gwt.sample.client.model.PathObserverFactory;
 import com.logikas.gwt.sample.client.model.Person;
 
 /**
@@ -32,8 +33,6 @@ public class gwt_sample implements EntryPoint {
 
     @JsType(prototype = "Object")
     public interface JsObject{
-
-        
     }
     
     @JsType(prototype = "EventTarget")
@@ -69,6 +68,13 @@ public class gwt_sample implements EntryPoint {
         public HTMLElement getElementsByTagName(String body);
 
     }
+    
+    @JsType(prototype = "PathObserver")
+    public interface PathObserver {
+        
+        void open(Handler handler);
+        
+    }
 
     @Override
     public void onModuleLoad() {
@@ -83,15 +89,17 @@ public class gwt_sample implements EntryPoint {
 
         Person person = new Person();
         Employee employee = new Employee("Cristian", "12365465481456");
-        ObservableModel.observe(person, null);
-        ObservableModel.observe(employee, null);
+        
+        PathObserver observer = PathObserverFactory.createObserver(person, "name");
+        window().getConsole().log(observer, "");
+        //observer.open(new Handler(null, null));
+        
+        //observer.open(body);
 
         person.setName("Cristian");
         window().getConsole().log("After Person asignation ", "");
         employee.setCuit("98798798797987");
         window().getConsole().log("After Employee asignation ", "");
-        
-
     }
 
     public static native void newJSModule()/*-{
