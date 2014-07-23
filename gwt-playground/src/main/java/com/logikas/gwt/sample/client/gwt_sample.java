@@ -3,7 +3,7 @@ package com.logikas.gwt.sample.client;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.js.JsProperty;
 import com.google.gwt.core.client.js.JsType;
-import com.logikas.gwt.sample.client.model.Employee;
+import com.google.gwt.user.client.DOM;
 import com.logikas.gwt.sample.client.model.Handler;
 import com.logikas.gwt.sample.client.model.PathObserverFactory;
 import com.logikas.gwt.sample.client.model.Person;
@@ -24,6 +24,8 @@ public class gwt_sample implements EntryPoint {
 
         @JsProperty(value = "console")
         Console getConsole();
+
+        public void alert(String hola);
     }
 
     @JsType(prototype = "HTMLBodyElement")
@@ -32,23 +34,33 @@ public class gwt_sample implements EntryPoint {
     }
 
     @JsType(prototype = "Object")
-    public interface JsObject{
+    public interface JsObject {
     }
-    
-    @JsType(prototype = "EventTarget")
-    public interface EventTarget extends JsObject{
 
-        
+    @JsType(prototype = "EventTarget")
+    public interface EventTarget extends JsObject {
+
     }
 
     @JsType(prototype = "Node")
     public interface Node extends EventTarget {
 
+        void bind(String property, PathObserver observer);
     }
 
     @JsType(prototype = "Element")
     public interface Element extends Node {
 
+    }
+
+    public interface EventListener<E extends JsObject> {
+
+        void onEvent(E event);
+    }
+
+    public interface OpenObserverListener {
+
+        void onOpen(String oldValue, String newValue);
     }
 
     @JsType(prototype = "HTMLElement")
@@ -57,6 +69,14 @@ public class gwt_sample implements EntryPoint {
         public void setAttribute(String align, String center);
 
         public void appendChild(HTMLElement element);
+
+        public void addEventListener(String event, EventListener<? extends JsObject> handler);
+
+        @JsProperty
+        public void setInnerHTML(String text);
+
+        @JsProperty
+        public void setInnerText(String text);
 
     }
 
@@ -68,12 +88,12 @@ public class gwt_sample implements EntryPoint {
         public HTMLElement getElementsByTagName(String body);
 
     }
-    
+
     @JsType(prototype = "PathObserver")
     public interface PathObserver {
-        
-        void open(Handler handler);
-        
+
+        void open(OpenObserverListener handler);
+
     }
 
     @Override
@@ -81,25 +101,40 @@ public class gwt_sample implements EntryPoint {
         Document doc = getDocument();
         HTMLElement div = doc.createElement("DIV");
         HTMLElement p = doc.createElement("P");
-        div.appendChild(p);
+        HTMLElement input = doc.createElement("input");
+        HTMLElement button = doc.createElement("button");
         HTMLBodyElement body = bodyElement();
-        body.appendChild(div);
+
+        final Person person = new Person();
+        PathObserver observer = PathObserverFactory.createObserver(person, "name");
+        input.bind("value", observer);
+
+        PathObserver observer1 = PathObserverFactory.createObserver(person, "name");
+        observer1.open(new OpenObserverListener() {
+            @Override
+            public void onOpen(String oldValue, String newValue) {
+                window().getConsole().log(oldValue);
+            }
+        });
+
+        person.setName("Cristian");
+        person.setName("Cristiaa");
+
+        button.setInnerText("UPDATE - See the console");
+
+        button.addEventListener("click", new EventListener<JsObject>() {
+            @Override
+            public void onEvent(JsObject event) {
+                window().getConsole().log(event);
+            }
+        });
 
         window().getConsole().log("%cWelcome to JSInterop!%c", "font-size:1.5em;color:#4558c9;", "color:#d61a7f;font-size:1em;");
 
-        Person person = new Person();
-        Employee employee = new Employee("Cristian", "12365465481456");
-        
-        PathObserver observer = PathObserverFactory.createObserver(person, "name");
-        window().getConsole().log(observer, "");
-        //observer.open(new Handler(null, null));
-        
-        //observer.open(body);
-
-        person.setName("Cristian");
-        window().getConsole().log("After Person asignation ", "");
-        employee.setCuit("98798798797987");
-        window().getConsole().log("After Employee asignation ", "");
+        div.appendChild(p);
+        div.appendChild(input);
+        body.appendChild(div);
+        body.appendChild(button);
     }
 
     public static native void newJSModule()/*-{
