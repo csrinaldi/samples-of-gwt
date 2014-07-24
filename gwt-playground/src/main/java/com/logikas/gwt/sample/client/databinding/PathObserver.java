@@ -9,14 +9,12 @@ import com.google.gwt.core.client.js.JsType;
 import com.logikas.gwt.sample.client.gwt_sample;
 
 /**
+ * {@link PathObserver} observes a "value-at-a-path" from a given object
  *
- *
- * @author Andres Testi <a
- * href="mailto:andres.a.testi@gmail.com">andres.a.testi@gmail.com</a>
  * @author Cristian Rinaldi <a
  * href="mailto:csrinaldi@gmail.com">csrinaldi@gmail.com</a>
  *
- * WorkingFlows
+ * Logikas
  * @param <T>
  * @param <E>
  *
@@ -24,4 +22,10 @@ import com.logikas.gwt.sample.client.gwt_sample;
 @JsType(prototype = "PathObserver")
 public interface PathObserver<T extends gwt_sample.JsObject, E extends Object> extends Observable<T, E> {
 
+    /**
+     * PathObserver also exposes a setValue method which attempts to update the underlying value. Setting the value does not affect notification state (in other words, a caller sets the value but does not discardChanges, the changeFn will be notified of the change).
+     * @param value 
+     */
+    void setValue(E value);
+    
 }

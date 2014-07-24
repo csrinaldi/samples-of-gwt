@@ -1,0 +1,5 @@
+{
+"proxy":"http://10.1.30.219:3128",
+"https-proxy":"http://10.1.30.219:3128",
+"directory":"bower"
+}

@@ -6,16 +6,20 @@
 
 package com.logikas.gwt.sample.client.databinding;
 
+import com.google.gwt.core.client.js.JsType;
+import com.logikas.gwt.sample.client.gwt_sample;
+
 /**
  *
  *
- * @author Andres Testi <a href="mailto:andres.a.testi@gmail.com">andres.a.testi@gmail.com</a>
  * @author Cristian Rinaldi <a href="mailto:csrinaldi@gmail.com">csrinaldi@gmail.com</a>
  * 
- * WorkingFlows
+ * Logikas
+ * @param <T>
  * 
  */
-public interface ObjectObserver {
+@JsType(prototype = "ObjectObserver")
+public interface ObjectObserver <T extends gwt_sample.JsObject> extends Observable<T, T> {
 
 }
 

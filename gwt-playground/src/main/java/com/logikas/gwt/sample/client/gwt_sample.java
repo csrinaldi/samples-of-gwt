@@ -1,11 +1,15 @@
 package com.logikas.gwt.sample.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.js.JsProperty;
 import com.google.gwt.core.client.js.JsType;
+import com.logikas.gwt.sample.client.databinding.ObjectObserver;
 import com.logikas.gwt.sample.client.databinding.PathObserver;
 import com.logikas.gwt.sample.client.databinding.factory.PathObserverFactory;
+import com.logikas.gwt.sample.client.databinding.listener.OpenObjectObserverListener;
 import com.logikas.gwt.sample.client.databinding.listener.OpenPathObserverListener;
+import com.logikas.gwt.sample.client.model.Employee;
 import com.logikas.gwt.sample.client.model.Person;
 
 /**
@@ -97,9 +101,9 @@ public class gwt_sample implements EntryPoint {
 
         final Person person = new Person();
         person.setName("Cristian");
-        final PathObserver<Person, String> observer = PathObserverFactory.createObserver(person, "name");
+        final PathObserver<Person, String> observer = PathObserverFactory.createPathObserver(person, "name");
         input.bind("value", observer);
-        final PathObserver<Person, String> observer1 = PathObserverFactory.createObserver(person, "name");
+        final PathObserver<Person, String> observer1 = PathObserverFactory.createPathObserver(person, "name");
         final String original = observer1.open(PathObserverFactory.createOpenPathObserverListener(new OpenPathObserverListener<Person>() {
             @Override
             public void onOpen(String newValue, String oldValue) {
@@ -130,6 +134,30 @@ public class gwt_sample implements EntryPoint {
         div.appendChild(input);
         body.appendChild(div);
         body.appendChild(button);
+        
+        final Employee employee = new Employee("Cristian", "202223232");
+        
+        final ObjectObserver<Employee> objectObserver = PathObserverFactory.createObjectObserver(employee);
+        objectObserver.open(PathObserverFactory.createOpenObjectObserverListener(new OpenObjectObserverListener<Employee>() {
+            @Override
+            public void onOpen(JsArray added, JsArray removed, JsArray changed) {
+                window().getConsole().log("Added +++ ");
+                window().getConsole().log(added);
+                window().getConsole().log("Added --- ");
+                window().getConsole().log("Removed +++ ");
+                window().getConsole().log(removed);
+                window().getConsole().log("Removed --- ");
+                window().getConsole().log("Changed +++ ");
+                window().getConsole().log(changed);
+                window().getConsole().log("Changed --- ");
+            }
+        }), employee);
+
+        employee.setCuit("nnnnn");
+        employee.setName("Vamos");
+        
+        window().getConsole().log(objectObserver.discardChanges());
+        
     }
 
     public static native void newJSModule()/*-{

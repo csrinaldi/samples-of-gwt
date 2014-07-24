@@ -28,5 +28,5 @@ public interface Observable<T extends gwt_sample.JsObject, E extends Object> ext
 
     void deliver();
 
-    String discardChanges();
+    E discardChanges();
 }

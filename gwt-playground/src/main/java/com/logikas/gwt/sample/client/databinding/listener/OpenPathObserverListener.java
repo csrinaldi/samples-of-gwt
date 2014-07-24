@@ -6,22 +6,28 @@
 package com.logikas.gwt.sample.client.databinding.listener;
 
 import com.google.gwt.core.client.js.JsType;
+import com.logikas.gwt.sample.client.databinding.PathObserver;
 import com.logikas.gwt.sample.client.gwt_sample.JsObject;
 
 /**
+ *  {@link OpenPathObserverListener} is a listener for open event in 
+ * the {@link PathObserver}
  *
- *
- * @author Andres Testi <a
- * href="mailto:andres.a.testi@gmail.com">andres.a.testi@gmail.com</a>
  * @author Cristian Rinaldi <a
  * href="mailto:csrinaldi@gmail.com">csrinaldi@gmail.com</a>
  *
- * WorkingFlows
+ * Logikas
+ * @param <T>
  *
  */
 @JsType
 public interface OpenPathObserverListener<T extends JsObject> extends ChangeFnListener<T> {
 
+    /**
+     * 
+     * @param newValue
+     * @param oldValue 
+     */
     void onOpen(String newValue, String oldValue);
 
 }

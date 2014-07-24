@@ -32,5 +32,4 @@ public class Employee extends Person {
     public void setCuit(String cuit) {
         this.cuit = cuit;
     }
-
 }
