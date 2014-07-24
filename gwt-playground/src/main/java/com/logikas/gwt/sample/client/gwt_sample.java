@@ -3,9 +3,9 @@ package com.logikas.gwt.sample.client;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.js.JsProperty;
 import com.google.gwt.core.client.js.JsType;
-import com.google.gwt.user.client.DOM;
-import com.logikas.gwt.sample.client.model.Handler;
-import com.logikas.gwt.sample.client.model.PathObserverFactory;
+import com.logikas.gwt.sample.client.databinding.PathObserver;
+import com.logikas.gwt.sample.client.databinding.factory.PathObserverFactory;
+import com.logikas.gwt.sample.client.databinding.listener.OpenPathObserverListener;
 import com.logikas.gwt.sample.client.model.Person;
 
 /**
@@ -53,14 +53,10 @@ public class gwt_sample implements EntryPoint {
 
     }
 
+    @JsType
     public interface EventListener<E extends JsObject> {
 
         void onEvent(E event);
-    }
-
-    public interface OpenObserverListener {
-
-        void onOpen(String oldValue, String newValue);
     }
 
     @JsType(prototype = "HTMLElement")
@@ -89,45 +85,44 @@ public class gwt_sample implements EntryPoint {
 
     }
 
-    @JsType(prototype = "PathObserver")
-    public interface PathObserver {
-
-        void open(OpenObserverListener handler);
-
-    }
-
     @Override
     public void onModuleLoad() {
-        Document doc = getDocument();
+        final Document doc = getDocument();
+        final HTMLBodyElement body = bodyElement();
+
         HTMLElement div = doc.createElement("DIV");
         HTMLElement p = doc.createElement("P");
         HTMLElement input = doc.createElement("input");
         HTMLElement button = doc.createElement("button");
-        HTMLBodyElement body = bodyElement();
 
         final Person person = new Person();
-        PathObserver observer = PathObserverFactory.createObserver(person, "name");
-        input.bind("value", observer);
-
-        PathObserver observer1 = PathObserverFactory.createObserver(person, "name");
-        observer1.open(new OpenObserverListener() {
-            @Override
-            public void onOpen(String oldValue, String newValue) {
-                window().getConsole().log(oldValue);
-            }
-        });
-
         person.setName("Cristian");
-        person.setName("Cristiaa");
+        final PathObserver<Person, String> observer = PathObserverFactory.createObserver(person, "name");
+        input.bind("value", observer);
+        final PathObserver<Person, String> observer1 = PathObserverFactory.createObserver(person, "name");
+        final String original = observer1.open(PathObserverFactory.createOpenPathObserverListener(new OpenPathObserverListener<Person>() {
+            @Override
+            public void onOpen(String newValue, String oldValue) {
+                HTMLElement p = doc.createElement("P");
+                p.setInnerText("The new Value is: " + newValue);
+                body.appendChild(p);
+            }
+        }), person);
 
-        button.setInnerText("UPDATE - See the console");
+        button.setInnerText("Clear changes");
 
-        button.addEventListener("click", new EventListener<JsObject>() {
+        button.addEventListener("click", EventListenerFactory.createEventListener(new EventListener<JsObject>() {
             @Override
             public void onEvent(JsObject event) {
-                window().getConsole().log(event);
+                String actualValue = observer.discardChanges();
+                window().getConsole().log(original);
+                observer.close();
+                observer1.close();
+                HTMLElement p = doc.createElement("P");
+                p.setInnerText("The Actual Value of Observation is: " + actualValue + " and the Original Value if property name is: " + original);
+                body.appendChild(p);
             }
-        });
+        }));
 
         window().getConsole().log("%cWelcome to JSInterop!%c", "font-size:1.5em;color:#4558c9;", "color:#d61a7f;font-size:1em;");
 
