@@ -31,39 +31,54 @@ public class gwt_sample implements EntryPoint {
 
         public void alert(String hola);
     }
-    
-    
+
+    @JsType
+    public interface Function {
+
+        Object f(Object... o);
+    }
+
+    @JsType
+    public interface Promise {
+
+        Promise when(Function f);
+
+        void done(Function f);
+
+    }
+
     @JsType(prototype = "jQuery")
-    public interface JQueryElement{
+    public interface JQueryElement {
 
         JQueryElement append(JQueryElement element);
-        
+
         @JsProperty
         JQueryElement html();
-        
+
         void data(String key, String value);
-        
+
+        Promise promise();
+
     }
-    
+
     @JsType(prototype = "jQuery")
-    public interface BootstrapSwichElement extends JQueryElement{
-        
+    public interface BootstrapSwichElement extends JQueryElement {
+
         @JsProperty
         void offText(String text);
-        
+
         @JsProperty
         String offText();
-        
+
         @JsProperty
         void onText(String text);
-        
+
         @JsProperty
         String onText();
-        
+
         @JsProperty
         Boolean state();
-        
-        
+
     }
 
     @JsType(prototype = "HTMLBodyElement")
@@ -125,10 +140,10 @@ public class gwt_sample implements EntryPoint {
 
     @Override
     public void onModuleLoad() {
-        
+
         final Document doc = getDocument();
         final HTMLBodyElement body = bodyElement();
-        
+
         final HTMLElement div = doc.createElement("DIV");
         final HTMLElement p = doc.createElement("P");
         final HTMLElement input = doc.createElement("input");
@@ -169,16 +184,25 @@ public class gwt_sample implements EntryPoint {
         div.appendChild(input);
         body.appendChild(div);
         body.appendChild(button);
-        
+
         JQueryElement checked = $("<input type='checkbox' checked></input>");
+        checked.data("on-text", "SI");
+        checked.data("off-text", "NO");
         $("body").append(checked);
-        
+
+        JQueryElement r = $("<div>");
+
+        r.promise().done(Fn(new Function() {
+            @Override
+            public Object f(Object... o) {
+                return true;
+            }
+        }, "Cristian", "Rinaldi" ));
+
         BootstrapSwichElement bse = bootstrapSwich(checked, null);
-        bse.data("data-on-text", "SI");
-        bse.data("data-off-text", "NO");
         
         final Employee employee = new Employee("Cristian", "202223232");
-        
+
         final ObjectObserver<Employee> objectObserver = PathObserverFactory.createObjectObserver(employee);
         objectObserver.open(PathObserverFactory.createOpenObjectObserverListener(new OpenObjectObserverListener<Employee>() {
             @Override
@@ -197,7 +221,7 @@ public class gwt_sample implements EntryPoint {
 
         employee.setCuit("nnnnn");
         employee.setName("Vamos");
-       
+
     }
 
     public static native void newJSModule()/*-{
@@ -217,11 +241,17 @@ public class gwt_sample implements EntryPoint {
     public static native Window window() /*-{
      return $wnd;
      }-*/;
-    
+
+    public static native Function Fn(Function f, Object... params) /*-{
+     return function(){
+        return f.f(params);
+     };
+     }-*/;
+
     public static native BootstrapSwichElement bootstrapSwich(JQueryElement element, JsObject options) /*-{
      return new $wnd.$.fn.bootstrapSwitch.Constructor(element, options);
      }-*/;
-    
+
     public static native JQueryElement $(String selector) /*-{
      return $wnd.$(selector);
      }-*/;
