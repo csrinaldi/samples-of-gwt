@@ -7,6 +7,8 @@ import com.logikas.gwt.sample.client.databinding.PathObserver;
 import com.logikas.gwt.sample.client.databinding.factory.PathObserverFactory;
 import com.logikas.gwt.sample.client.databinding.listener.OpenPathObserverListener;
 import com.logikas.gwt.sample.client.model.Employee;
+import com.logikas.gwt.sample.client.model.JSON;
+import com.logikas.gwt.sample.client.model.JsFactory;
 import com.logikas.gwt.sample.client.model.Person;
 import com.logikas.gwt.sample.client.model.datatable.Array;
 import com.logikas.gwt.sample.client.model.datatable.OptionConfig;
@@ -155,7 +157,7 @@ public class gwt_sample implements EntryPoint {
 
         button.setInnerText("Clear changes");
 
-        /*button.addEventListener("click", EventListenerFactory.createEventListener(new EventListener<JsObject>() {
+        button.addEventListener("click", EventListenerFactory.createEventListener(new EventListener<JsObject>() {
             @Override
             public void onEvent(JsObject event) {
                 String actualValue = observer.discardChanges();
@@ -166,7 +168,7 @@ public class gwt_sample implements EntryPoint {
                 p.setInnerText("The Actual Value of Observation is: " + actualValue + " and the Original Value if property name is: " + original);
                 body.appendChild(p);
             }
-        }));*/
+        }));
 
         window().getConsole().log("%cWelcome to JSInterop!%c", "font-size:1.5em;color:#4558c9;", "color:#d61a7f;font-size:1em;");
 
@@ -222,11 +224,12 @@ public class gwt_sample implements EntryPoint {
             i++;
         }
         
+        JSON j = JsFactory.jsonFactory();
         table.draw();
-        
-        
 
         final Employee employee = new Employee("Cristian", "202223232");
+        
+        window().getConsole().log(j.stringify(employee));
 
         /*final ObjectObserver<Employee> objectObserver = PathObserverFactory.createObjectObserver(employee);
         objectObserver.open(PathObserverFactory.createOpenObjectObserverListener(new OpenObjectObserverListener<Employee>() {
