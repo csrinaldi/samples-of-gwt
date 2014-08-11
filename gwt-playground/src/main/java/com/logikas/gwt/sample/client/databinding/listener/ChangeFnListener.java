@@ -7,7 +7,7 @@ package com.logikas.gwt.sample.client.databinding.listener;
 
 import com.google.gwt.core.client.js.JsType;
 import com.logikas.gwt.sample.client.databinding.Observable;
-import com.logikas.gwt.sample.client.gwt_sample;
+import com.logikas.gwt.sample.client.model.JsObject;
 
 /**
  * {@link ChangeFnListener} is a general listener for open method in the all
@@ -21,6 +21,6 @@ import com.logikas.gwt.sample.client.gwt_sample;
  *
  */
 @JsType
-public interface ChangeFnListener<T extends gwt_sample.JsObject> {
+public interface ChangeFnListener<T extends JsObject> {
 
 }

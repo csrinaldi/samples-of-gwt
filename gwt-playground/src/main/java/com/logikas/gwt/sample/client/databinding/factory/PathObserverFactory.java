@@ -11,7 +11,8 @@ import com.logikas.gwt.sample.client.databinding.PathObserver;
 import com.logikas.gwt.sample.client.databinding.listener.ChangeFnListener;
 import com.logikas.gwt.sample.client.databinding.listener.OpenObjectObserverListener;
 import com.logikas.gwt.sample.client.databinding.listener.OpenPathObserverListener;
-import com.logikas.gwt.sample.client.gwt_sample;
+import com.logikas.gwt.sample.client.model.JsObject;
+
 
 /**
  * {@link PathObserverFactory} is the component in charge of create all 
@@ -22,22 +23,22 @@ import com.logikas.gwt.sample.client.gwt_sample;
  */
 public class PathObserverFactory {
 
-    public static native <T extends gwt_sample.JsObject, E extends Object> PathObserver<T, E> createPathObserver(T obj, E path)/*-{
+    public static native <T extends JsObject, E extends Object> PathObserver<T, E> createPathObserver(T obj, E path)/*-{
      return new $wnd.PathObserver(obj, path);
      }-*/;
 
     
-    public static native <T extends gwt_sample.JsObject> ObjectObserver<T> createObjectObserver(T obj)/*-{
+    public static native <T extends JsObject> ObjectObserver<T> createObjectObserver(T obj)/*-{
      return new $wnd.ObjectObserver(obj);
      }-*/;
     
-    public static native <T extends gwt_sample.JsObject> OpenObjectObserverListener<T> createOpenObjectObserverListener(OpenObjectObserverListener<T> listener)/*-{
+    public static native <T extends JsObject> OpenObjectObserverListener<T> createOpenObjectObserverListener(OpenObjectObserverListener<T> listener)/*-{
      return function(added, removed, changed, fn){
      listener.onOpen(added, removed, changed);
      }
      }-*/;
     
-    public static native <T extends gwt_sample.JsObject> OpenPathObserverListener<T> createOpenPathObserverListener(OpenPathObserverListener<T> listener)/*-{
+    public static native <T extends JsObject> OpenPathObserverListener<T> createOpenPathObserverListener(OpenPathObserverListener<T> listener)/*-{
      return function(newValue, oldValue){
      listener.onOpen(newValue, oldValue);
      }

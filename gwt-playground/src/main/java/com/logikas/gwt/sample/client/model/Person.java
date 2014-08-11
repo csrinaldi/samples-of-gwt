@@ -8,36 +8,56 @@ package com.logikas.gwt.sample.client.model;
 import com.google.gwt.core.client.js.JsExport;
 import com.google.gwt.core.client.js.JsNamespace;
 import com.google.gwt.core.client.js.JsProperty;
-import com.logikas.gwt.sample.client.gwt_sample;
+import com.google.gwt.core.client.js.JsType;
+import com.logikas.gwt.sample.client.model.datatable.Model;
 
 /**
  *
  * @author Cristian Rinaldi
  */
+@JsType
 @JsNamespace("$wnd.Logikas.Model")
-public class Person implements gwt_sample.JsObject {
+public class Person implements Model, com.logikas.gwt.sample.client.model.JsObject {
 
     private String name;
+
+    private String email;
 
     @JsExport
     public Person() {
     }
-    
+
     @JsExport
     public Person(String name) {
         this.name = name;
+        this.email = "";
     }
 
-    @JsProperty
+    @JsExport
+    public Person(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+
+    
     public String getName() {
         return name;
     }
 
-    @JsProperty
     public void setName(String name) {
         this.name = name;
     }
-    
-    
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "\"Username\" : \""+name+"\",\"Email\":\""+email+"\"";
+    }
 }

@@ -7,7 +7,7 @@
 package com.logikas.gwt.sample.client.databinding;
 
 import com.google.gwt.core.client.js.JsType;
-import com.logikas.gwt.sample.client.gwt_sample;
+import com.logikas.gwt.sample.client.model.JsObject;
 
 /**
  *
@@ -19,7 +19,7 @@ import com.logikas.gwt.sample.client.gwt_sample;
  * 
  */
 @JsType(prototype = "ObjectObserver")
-public interface ObjectObserver <T extends gwt_sample.JsObject> extends Observable<T, T> {
+public interface ObjectObserver <T extends JsObject> extends Observable<T, T> {
 
 }
 

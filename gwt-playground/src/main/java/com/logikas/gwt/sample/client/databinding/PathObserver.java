@@ -6,7 +6,7 @@
 package com.logikas.gwt.sample.client.databinding;
 
 import com.google.gwt.core.client.js.JsType;
-import com.logikas.gwt.sample.client.gwt_sample;
+import com.logikas.gwt.sample.client.model.JsObject;
 
 /**
  * {@link PathObserver} observes a "value-at-a-path" from a given object
@@ -20,7 +20,7 @@ import com.logikas.gwt.sample.client.gwt_sample;
  *
  */
 @JsType(prototype = "PathObserver")
-public interface PathObserver<T extends gwt_sample.JsObject, E extends Object> extends Observable<T, E> {
+public interface PathObserver<T extends JsObject, E extends Object> extends Observable<T, E> {
 
     /**
      * PathObserver also exposes a setValue method which attempts to update the underlying value. Setting the value does not affect notification state (in other words, a caller sets the value but does not discardChanges, the changeFn will be notified of the change).

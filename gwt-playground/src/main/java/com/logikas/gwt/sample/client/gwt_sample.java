@@ -1,16 +1,18 @@
 package com.logikas.gwt.sample.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.js.JsProperty;
 import com.google.gwt.core.client.js.JsType;
-import com.logikas.gwt.sample.client.databinding.ObjectObserver;
 import com.logikas.gwt.sample.client.databinding.PathObserver;
 import com.logikas.gwt.sample.client.databinding.factory.PathObserverFactory;
-import com.logikas.gwt.sample.client.databinding.listener.OpenObjectObserverListener;
 import com.logikas.gwt.sample.client.databinding.listener.OpenPathObserverListener;
 import com.logikas.gwt.sample.client.model.Employee;
 import com.logikas.gwt.sample.client.model.Person;
+import com.logikas.gwt.sample.client.model.datatable.Array;
+import com.logikas.gwt.sample.client.model.datatable.OptionConfig;
+import com.logikas.gwt.sample.client.model.datatable.DataTableElement;
+import com.logikas.gwt.sample.client.model.datatable.factory.DataTableFactory;
+
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -59,25 +61,13 @@ public class gwt_sample implements EntryPoint {
 
         Promise promise();
 
+        DataTableElement DataTable(OptionConfig config);
+        
+        //DataTableElement DataTable();
+
     }
-
-    @JsType(prototype = "jQuery")
+    
     public interface BootstrapSwichElement extends JQueryElement {
-
-        @JsProperty
-        void offText(String text);
-
-        @JsProperty
-        String offText();
-
-        @JsProperty
-        void onText(String text);
-
-        @JsProperty
-        String onText();
-
-        @JsProperty
-        Boolean state();
 
     }
 
@@ -165,7 +155,7 @@ public class gwt_sample implements EntryPoint {
 
         button.setInnerText("Clear changes");
 
-        button.addEventListener("click", EventListenerFactory.createEventListener(new EventListener<JsObject>() {
+        /*button.addEventListener("click", EventListenerFactory.createEventListener(new EventListener<JsObject>() {
             @Override
             public void onEvent(JsObject event) {
                 String actualValue = observer.discardChanges();
@@ -176,7 +166,7 @@ public class gwt_sample implements EntryPoint {
                 p.setInnerText("The Actual Value of Observation is: " + actualValue + " and the Original Value if property name is: " + original);
                 body.appendChild(p);
             }
-        }));
+        }));*/
 
         window().getConsole().log("%cWelcome to JSInterop!%c", "font-size:1.5em;color:#4558c9;", "color:#d61a7f;font-size:1em;");
 
@@ -189,7 +179,7 @@ public class gwt_sample implements EntryPoint {
         checked.data("on-text", "SI");
         checked.data("off-text", "NO");
         $("body").append(checked);
-
+        
         JQueryElement r = $("<div>");
 
         r.promise().done(Fn(new Function() {
@@ -197,13 +187,48 @@ public class gwt_sample implements EntryPoint {
             public Object f(Object... o) {
                 return true;
             }
-        }, "Cristian", "Rinaldi" ));
+        }, "Cristian", "Rinaldi"));
 
         BootstrapSwichElement bse = bootstrapSwich(checked, null);
+
+        /*ColumnConfig columnConfig = createColumnConfig();
+        columnConfig.setOrderable(true);
+        OptionConfig config = createDataTableConfig();
+        JsArrayMixed jas = JavaScriptObject.createArray().cast();
+        jas.push((JavaScriptObject) columnConfig);
+        config.setColumns(jas);*/
         
+        //ColumnConfig columnConfig = DataTableFactory.createColumnConfig();
+        //columnConfig.
+        
+        OptionConfig config = DataTableFactory.createDataTableConfig();
+        //dataTableConfig.setColumns(cc);
+        //dataTableConfig.setData(persons);
+        config.setInfo(false);
+        config.setOrdering(true);
+        config.setSearching(true);
+        config.setPageLength(100);
+        //dataTableConfig.setPagingType("full_numbers");
+
+        DataTableElement table = $("#sample_1").DataTable(config);
+        
+        
+        for (int i = 0; i < 1000; i++) {
+            Array row = DataTableFactory.createArray();
+            Person pe = new Person("Nombre_"+i, "email@gmail.com"); 
+            row.push(pe.getName());
+            row.push(pe.getEmail());
+            table.getRow().add(row);
+            i++;
+        }
+        
+        table.draw();
+        
+        
+
         final Employee employee = new Employee("Cristian", "202223232");
 
-        final ObjectObserver<Employee> objectObserver = PathObserverFactory.createObjectObserver(employee);
+        /*final ObjectObserver<Employee> objectObserver = PathObserverFactory.createObjectObserver(employee);
         objectObserver.open(PathObserverFactory.createOpenObjectObserverListener(new OpenObjectObserverListener<Employee>() {
             @Override
             public void onOpen(JsArray added, JsArray removed, JsArray changed) {
@@ -217,7 +242,7 @@ public class gwt_sample implements EntryPoint {
                 window().getConsole().log(changed);
                 window().getConsole().log("Changed --- ");
             }
-        }), employee);
+        }), employee);*/
 
         employee.setCuit("nnnnn");
         employee.setName("Vamos");
@@ -244,7 +269,7 @@ public class gwt_sample implements EntryPoint {
 
     public static native Function Fn(Function f, Object... params) /*-{
      return function(){
-        return f.f(params);
+     return f.f(params);
      };
      }-*/;
 
@@ -255,4 +280,9 @@ public class gwt_sample implements EntryPoint {
     public static native JQueryElement $(String selector) /*-{
      return $wnd.$(selector);
      }-*/;
+    
+    public static native String toJson(com.logikas.gwt.sample.client.model.JsObject object) /*-{
+     return JSON.stringify(object);
+     }-*/;
+
 }

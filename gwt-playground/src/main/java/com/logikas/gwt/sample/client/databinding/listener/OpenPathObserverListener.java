@@ -7,7 +7,8 @@ package com.logikas.gwt.sample.client.databinding.listener;
 
 import com.google.gwt.core.client.js.JsType;
 import com.logikas.gwt.sample.client.databinding.PathObserver;
-import com.logikas.gwt.sample.client.gwt_sample.JsObject;
+import com.logikas.gwt.sample.client.model.JsObject;
+
 
 /**
  *  {@link OpenPathObserverListener} is a listener for open event in 

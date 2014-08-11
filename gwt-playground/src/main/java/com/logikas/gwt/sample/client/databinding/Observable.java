@@ -8,6 +8,7 @@ package com.logikas.gwt.sample.client.databinding;
 import com.google.gwt.core.client.js.JsType;
 import com.logikas.gwt.sample.client.databinding.listener.ChangeFnListener;
 import com.logikas.gwt.sample.client.gwt_sample;
+import com.logikas.gwt.sample.client.model.JsObject;
 
 /**
  *
@@ -20,7 +21,7 @@ import com.logikas.gwt.sample.client.gwt_sample;
  *
  */
 @JsType
-public interface Observable<T extends gwt_sample.JsObject, E extends Object> extends gwt_sample.JsObject {
+public interface Observable<T extends JsObject, E extends Object> extends gwt_sample.JsObject {
 
     void close();
 
