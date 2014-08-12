@@ -3,18 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.logikas.gwt.sample.client.model.datatable;
 
 import com.google.gwt.core.client.js.JsType;
+import com.logikas.gwt.sample.client.model.JsObject;
 
 /**
- *
- * @author iron
+ * Interface of JSON object
+ * @author Cristian Rinaldi
  */
-@JsType
-public interface Row {
-    
-    DataTableElement add(Array data);
-    
+@JsType(isNative = true, prototype = "JSON")
+public interface JSON {
+    String stringify(JsObject object);
 }

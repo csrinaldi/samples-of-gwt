@@ -7,7 +7,6 @@ package com.logikas.gwt.sample.client.model;
 
 import com.google.gwt.core.client.js.JsExport;
 import com.google.gwt.core.client.js.JsNamespace;
-import com.google.gwt.core.client.js.JsProperty;
 import com.google.gwt.core.client.js.JsType;
 import com.logikas.gwt.sample.client.model.datatable.Model;
 

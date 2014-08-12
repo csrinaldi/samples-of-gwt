@@ -11,6 +11,8 @@ import com.logikas.gwt.sample.client.model.Person;
 import com.logikas.gwt.sample.client.model.datatable.Array;
 import com.logikas.gwt.sample.client.model.datatable.OptionConfig;
 import com.logikas.gwt.sample.client.model.datatable.DataTableElement;
+import com.logikas.gwt.sample.client.model.datatable.JSON;
+import com.logikas.gwt.sample.client.model.datatable.JsFactory;
 import com.logikas.gwt.sample.client.model.datatable.factory.DataTableFactory;
 
 
@@ -202,16 +204,12 @@ public class gwt_sample implements EntryPoint {
         //columnConfig.
         
         OptionConfig config = DataTableFactory.createDataTableConfig();
-        //dataTableConfig.setColumns(cc);
-        //dataTableConfig.setData(persons);
         config.setInfo(false);
         config.setOrdering(true);
         config.setSearching(true);
         config.setPageLength(100);
-        //dataTableConfig.setPagingType("full_numbers");
 
         DataTableElement table = $("#sample_1").DataTable(config);
-        
         
         for (int i = 0; i < 1000; i++) {
             Array row = DataTableFactory.createArray();
@@ -224,7 +222,8 @@ public class gwt_sample implements EntryPoint {
         
         table.draw();
         
-        
+        JSON j = JsFactory.createJSON();
+        window().getConsole().log(j.stringify(person));
 
         final Employee employee = new Employee("Cristian", "202223232");
 
