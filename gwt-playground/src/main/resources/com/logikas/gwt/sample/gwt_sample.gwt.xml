@@ -3,6 +3,8 @@
     <!-- Inherit the core Web Toolkit stuff.                        -->
     <inherits name='com.google.gwt.user.User'/>
     <inherits name="com.google.gwt.logging.Logging" />
+    <inherits name="com.workingflows.js.jscore.JSCore" />
+    
 
     <!-- Specify the app entry point class.                         -->
     <entry-point class='com.logikas.gwt.sample.client.gwt_sample' />

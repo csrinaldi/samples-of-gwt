@@ -4,17 +4,12 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.js.JsProperty;
 import com.google.gwt.core.client.js.JsType;
 import com.logikas.gwt.sample.client.databinding.PathObserver;
-import com.logikas.gwt.sample.client.databinding.factory.PathObserverFactory;
-import com.logikas.gwt.sample.client.databinding.listener.OpenPathObserverListener;
 import com.logikas.gwt.sample.client.model.Employee;
 import com.logikas.gwt.sample.client.model.Person;
-import com.logikas.gwt.sample.client.model.datatable.Array;
 import com.logikas.gwt.sample.client.model.datatable.OptionConfig;
 import com.logikas.gwt.sample.client.model.datatable.DataTableElement;
-import com.logikas.gwt.sample.client.model.datatable.JSON;
-import com.logikas.gwt.sample.client.model.datatable.JsFactory;
-import com.logikas.gwt.sample.client.model.datatable.factory.DataTableFactory;
-
+import com.workingflows.js.jscore.client.api.Function;
+import com.workingflows.js.jscore.client.factory.JS;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -37,7 +32,7 @@ public class gwt_sample implements EntryPoint {
     }
 
     @JsType
-    public interface Function {
+    public interface JFunction {
 
         Object f(Object... o);
     }
@@ -45,9 +40,9 @@ public class gwt_sample implements EntryPoint {
     @JsType
     public interface Promise {
 
-        Promise when(Function f);
+        Promise when(JFunction f);
 
-        void done(Function f);
+        void done(JFunction f);
 
     }
 
@@ -64,11 +59,10 @@ public class gwt_sample implements EntryPoint {
         Promise promise();
 
         DataTableElement DataTable(OptionConfig config);
-        
-        //DataTableElement DataTable();
 
+        //DataTableElement DataTable();
     }
-    
+
     public interface BootstrapSwichElement extends JQueryElement {
 
     }
@@ -143,34 +137,33 @@ public class gwt_sample implements EntryPoint {
 
         final Person person = new Person();
         person.setName("Cristian");
-        final PathObserver<Person, String> observer = PathObserverFactory.createPathObserver(person, "name");
-        input.bind("value", observer);
-        final PathObserver<Person, String> observer1 = PathObserverFactory.createPathObserver(person, "name");
-        final String original = observer1.open(PathObserverFactory.createOpenPathObserverListener(new OpenPathObserverListener<Person>() {
-            @Override
-            public void onOpen(String newValue, String oldValue) {
-                HTMLElement p = doc.createElement("P");
-                p.setInnerText("The new Value is: " + newValue);
-                body.appendChild(p);
-            }
-        }), person);
+        /*final PathObserver<Person, String> observer = PathObserverFactory.createPathObserver(person, "name");
+         input.bind("value", observer);
+         final PathObserver<Person, String> observer1 = PathObserverFactory.createPathObserver(person, "name");
+         final String original = observer1.open(PathObserverFactory.createOpenPathObserverListener(new OpenPathObserverListener<Person>() {
+         @Override
+         public void onOpen(String newValue, String oldValue) {
+         HTMLElement p = doc.createElement("P");
+         p.setInnerText("The new Value is: " + newValue);
+         body.appendChild(p);
+         }
+         }), person);*/
 
         button.setInnerText("Clear changes");
 
-        /*button.addEventListener("click", EventListenerFactory.createEventListener(new EventListener<JsObject>() {
+        window().getConsole().log("Definiendo Observe .... ");
+        window().getConsole().log(JS.Object);
+        
+        JS.Object.observe(person, JS.Function(new Function() {
             @Override
-            public void onEvent(JsObject event) {
-                String actualValue = observer.discardChanges();
-                window().getConsole().log(original);
-                observer.close();
-                observer1.close();
-                HTMLElement p = doc.createElement("P");
-                p.setInnerText("The Actual Value of Observation is: " + actualValue + " and the Original Value if property name is: " + original);
-                body.appendChild(p);
+            public void f(Object... changed) {
+                window().getConsole().log("Changed Person .... ");
+                window().getConsole().log(changed);
+                window().getConsole().log("Changed Person .... ");
             }
-        }));*/
-
-        window().getConsole().log("%cWelcome to JSInterop!%c", "font-size:1.5em;color:#4558c9;", "color:#d61a7f;font-size:1em;");
+        }));
+        
+        window().getConsole().log("Definido Observe .... ");
 
         div.appendChild(p);
         div.appendChild(input);
@@ -181,70 +174,38 @@ public class gwt_sample implements EntryPoint {
         checked.data("on-text", "SI");
         checked.data("off-text", "NO");
         $("body").append(checked);
-        
+
         JQueryElement r = $("<div>");
 
-        r.promise().done(Fn(new Function() {
+        r.promise().done(Fn(new JFunction() {
             @Override
             public Object f(Object... o) {
                 return true;
             }
         }, "Cristian", "Rinaldi"));
 
-        BootstrapSwichElement bse = bootstrapSwich(checked, null);
-
-        /*ColumnConfig columnConfig = createColumnConfig();
-        columnConfig.setOrderable(true);
-        OptionConfig config = createDataTableConfig();
-        JsArrayMixed jas = JavaScriptObject.createArray().cast();
-        jas.push((JavaScriptObject) columnConfig);
-        config.setColumns(jas);*/
-        
-        //ColumnConfig columnConfig = DataTableFactory.createColumnConfig();
-        //columnConfig.
-        
-        OptionConfig config = DataTableFactory.createDataTableConfig();
-        config.setInfo(false);
-        config.setOrdering(true);
-        config.setSearching(true);
-        config.setPageLength(100);
-
-        DataTableElement table = $("#sample_1").DataTable(config);
-        
-        for (int i = 0; i < 1000; i++) {
-            Array row = DataTableFactory.createArray();
-            Person pe = new Person("Nombre_"+i, "email@gmail.com"); 
-            row.push(pe.getName());
-            row.push(pe.getEmail());
-            table.getRow().add(row);
-            i++;
-        }
-        
-        table.draw();
-        
-        JSON j = JsFactory.createJSON();
-        window().getConsole().log(j.stringify(person));
-
         final Employee employee = new Employee("Cristian", "202223232");
 
         /*final ObjectObserver<Employee> objectObserver = PathObserverFactory.createObjectObserver(employee);
-        objectObserver.open(PathObserverFactory.createOpenObjectObserverListener(new OpenObjectObserverListener<Employee>() {
-            @Override
-            public void onOpen(JsArray added, JsArray removed, JsArray changed) {
-                window().getConsole().log("Added +++ ");
-                window().getConsole().log(added);
-                window().getConsole().log("Added --- ");
-                window().getConsole().log("Removed +++ ");
-                window().getConsole().log(removed);
-                window().getConsole().log("Removed --- ");
-                window().getConsole().log("Changed +++ ");
-                window().getConsole().log(changed);
-                window().getConsole().log("Changed --- ");
-            }
-        }), employee);*/
-
+         objectObserver.open(PathObserverFactory.createOpenObjectObserverListener(new OpenObjectObserverListener<Employee>() {
+         @Override
+         public void onOpen(JsArray added, JsArray removed, JsArray changed) {
+         window().getConsole().log("Added +++ ");
+         window().getConsole().log(added);
+         window().getConsole().log("Added --- ");
+         window().getConsole().log("Removed +++ ");
+         window().getConsole().log(removed);
+         window().getConsole().log("Removed --- ");
+         window().getConsole().log("Changed +++ ");
+         window().getConsole().log(changed);
+         window().getConsole().log("Changed --- ");
+         }
+         }), employee);*/
         employee.setCuit("nnnnn");
         employee.setName("Vamos");
+
+        person.setEmail("hola");
+        person.setName("fff");
 
     }
 
@@ -266,10 +227,10 @@ public class gwt_sample implements EntryPoint {
      return $wnd;
      }-*/;
 
-    public static native Function Fn(Function f, Object... params) /*-{
+    public static native JFunction Fn(JFunction f, Object... params)/*-{
      return function(){
-     return f.f(params);
-     };
+     f.f(params);
+     }
      }-*/;
 
     public static native BootstrapSwichElement bootstrapSwich(JQueryElement element, JsObject options) /*-{
@@ -279,7 +240,7 @@ public class gwt_sample implements EntryPoint {
     public static native JQueryElement $(String selector) /*-{
      return $wnd.$(selector);
      }-*/;
-    
+
     public static native String toJson(com.logikas.gwt.sample.client.model.JsObject object) /*-{
      return JSON.stringify(object);
      }-*/;
