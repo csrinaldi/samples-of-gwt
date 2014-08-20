@@ -5,13 +5,11 @@
  */
 package com.logikas.gwt.sample.client.model;
 
-import com.logikas.gwt.sample.client.gwt_sample;
-
 /**
  *
  * @author Cristian Rinaldi
  */
-public class Handler implements gwt_sample.JsObject {
+public class Handler implements com.workingflows.js.jscore.client.api.JsObject{
 
     private final String newValue;
 

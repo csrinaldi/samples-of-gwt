@@ -8,7 +8,8 @@ package com.logikas.gwt.sample.client.databinding.listener;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.js.JsType;
 import com.logikas.gwt.sample.client.databinding.ObjectObserver;
-import com.logikas.gwt.sample.client.model.JsObject;
+import com.workingflows.js.jscore.client.api.JsObject;
+
 
 
 /**

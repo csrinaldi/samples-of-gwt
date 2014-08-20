@@ -7,6 +7,7 @@
 package com.logikas.gwt.sample.client.model;
 
 import com.google.gwt.core.client.js.JsType;
+import com.workingflows.js.jscore.client.api.JsObject;
 
 /**
  *

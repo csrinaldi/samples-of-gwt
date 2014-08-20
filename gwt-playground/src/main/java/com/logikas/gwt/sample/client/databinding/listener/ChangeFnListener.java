@@ -7,7 +7,8 @@ package com.logikas.gwt.sample.client.databinding.listener;
 
 import com.google.gwt.core.client.js.JsType;
 import com.logikas.gwt.sample.client.databinding.Observable;
-import com.logikas.gwt.sample.client.model.JsObject;
+import com.workingflows.js.jscore.client.api.JsObject;
+
 
 /**
  * {@link ChangeFnListener} is a general listener for open method in the all

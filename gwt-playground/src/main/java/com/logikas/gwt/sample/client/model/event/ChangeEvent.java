@@ -7,17 +7,18 @@
 package com.logikas.gwt.sample.client.model.event;
 
 import com.logikas.gwt.sample.client.gwt_sample;
+import com.workingflows.js.jscore.client.api.JsObject;
 
 /**
  *
  * @author devuser
  */
 
-public interface ChangeEvent extends gwt_sample.JsObject{
+public interface ChangeEvent extends JsObject{
     
     String getName();
     
-    gwt_sample.JsObject getObject();
+    JsObject getObject();
     
     String getType();
     

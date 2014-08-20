@@ -61,6 +61,8 @@
                 <version>2.7.0-SNAPSHOT</version>
                 <configuration>
                     <style>PRETTY</style>
+                    <gen>${basedir}/gen</gen>
+                    
                 </configuration>
                 <executions>
                     <execution>

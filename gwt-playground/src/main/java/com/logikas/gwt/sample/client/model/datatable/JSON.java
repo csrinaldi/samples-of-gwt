@@ -6,7 +6,7 @@
 package com.logikas.gwt.sample.client.model.datatable;
 
 import com.google.gwt.core.client.js.JsType;
-import com.logikas.gwt.sample.client.model.JsObject;
+import com.workingflows.js.jscore.client.api.JsObject;
 
 /**
  * Interface of JSON object

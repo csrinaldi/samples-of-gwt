@@ -5,13 +5,16 @@ import com.google.gwt.core.client.js.JsProperty;
 import com.google.gwt.core.client.js.JsType;
 import com.logikas.gwt.sample.client.databinding.PathObserver;
 import com.logikas.gwt.sample.client.model.Employee;
-import com.logikas.gwt.sample.client.model.JSON;
-import com.logikas.gwt.sample.client.model.JsFactory;
 import com.logikas.gwt.sample.client.model.Person;
 import com.logikas.gwt.sample.client.model.datatable.OptionConfig;
 import com.logikas.gwt.sample.client.model.datatable.DataTableElement;
-import com.logikas.gwt.sample.client.model.datatable.factory.DataTableFactory;
 import com.workingflows.js.jscore.client.api.Function;
+import com.workingflows.js.jscore.client.api.JsObject;
+import com.workingflows.js.jscore.client.api.promise.Promise;
+import com.workingflows.js.jscore.client.api.promise.PromiseFn;
+import com.workingflows.js.jscore.client.api.promise.Rejected;
+import com.workingflows.js.jscore.client.api.promise.Resolve;
+import com.workingflows.js.jscore.client.factory.Browser;
 import com.workingflows.js.jscore.client.factory.JS;
 
 /**
@@ -41,9 +44,9 @@ public class gwt_sample implements EntryPoint {
     }
 
     @JsType
-    public interface Promise {
+    public interface JQueryPromise {
 
-        Promise when(JFunction f);
+        JQueryPromise when(JFunction f);
 
         void done(JFunction f);
 
@@ -59,7 +62,7 @@ public class gwt_sample implements EntryPoint {
 
         void data(String key, String value);
 
-        Promise promise();
+        JQueryPromise promise();
 
         DataTableElement DataTable(OptionConfig config);
 
@@ -73,10 +76,6 @@ public class gwt_sample implements EntryPoint {
     @JsType(prototype = "HTMLBodyElement")
     public interface HTMLBodyElement extends HTMLElement {
 
-    }
-
-    @JsType(prototype = "Object")
-    public interface JsObject {
     }
 
     @JsType(prototype = "EventTarget")
@@ -186,67 +185,30 @@ public class gwt_sample implements EntryPoint {
             }
         }, "Cristian", "Rinaldi"));
 
-        BootstrapSwichElement bse = bootstrapSwich(checked, null);
-
-        /*ColumnConfig columnConfig = createColumnConfig();
-        columnConfig.setOrderable(true);
-        OptionConfig config = createDataTableConfig();
-        JsArrayMixed jas = JavaScriptObject.createArray().cast();
-        jas.push((JavaScriptObject) columnConfig);
-        config.setColumns(jas);*/
-        
-        //ColumnConfig columnConfig = DataTableFactory.createColumnConfig();
-        //columnConfig.
-        
-        OptionConfig config = DataTableFactory.createDataTableConfig();
-        //dataTableConfig.setColumns(cc);
-        //dataTableConfig.setData(persons);
-        config.setInfo(false);
-        config.setOrdering(true);
-        config.setSearching(true);
-        config.setPageLength(100);
-        //dataTableConfig.setPagingType("full_numbers");
-
-        DataTableElement table = $("#sample_1").DataTable(config);
-        
-        
-        /*for (int i = 0; i < 1000; i++) {
-            Array row = Browser.createArray();
-            Person pe = new Person("Nombre_"+i, "email@gmail.com"); 
-            row.push(pe.getName());
-            row.push(pe.getEmail());
-            table.getRow().add(row);
-            i++;
-        }*/
-        
-        JSON j = JsFactory.jsonFactory();
-        table.draw();
+        BootstrapSwichElement bse = bootstrapSwich(checked, Browser.newObject());
 
         final Employee employee = new Employee("Cristian", "202223232");
-        
-        window().getConsole().log(j.stringify(employee));
-
-        /*final ObjectObserver<Employee> objectObserver = PathObserverFactory.createObjectObserver(employee);
-         objectObserver.open(PathObserverFactory.createOpenObjectObserverListener(new OpenObjectObserverListener<Employee>() {
-         @Override
-         public void onOpen(JsArray added, JsArray removed, JsArray changed) {
-         window().getConsole().log("Added +++ ");
-         window().getConsole().log(added);
-         window().getConsole().log("Added --- ");
-         window().getConsole().log("Removed +++ ");
-         window().getConsole().log(removed);
-         window().getConsole().log("Removed --- ");
-         window().getConsole().log("Changed +++ ");
-         window().getConsole().log(changed);
-         window().getConsole().log("Changed --- ");
-         }
-         }), employee);*/
-        employee.setCuit("nnnnn");
-        employee.setName("Vamos");
 
         person.setEmail("hola");
         person.setName("fff");
-
+        
+        
+        Promise p1 = Browser.newPromise(JS.Function(new PromiseFn() {
+            @Override
+            public void f(Resolve resolve, Rejected rejected) {
+                window().getConsole().log("Promise Resolve");
+                resolve.resolve(true);
+            }
+        }));
+        
+        window().getConsole().log(p1);
+        
+        p1.then(JS.Function(new Function() {
+            @Override
+            public void f(Object... changed) {
+                window().getConsole().log("Promise Complete");
+            }
+        }));
     }
 
     public static native void newJSModule()/*-{
@@ -281,7 +243,7 @@ public class gwt_sample implements EntryPoint {
      return $wnd.$(selector);
      }-*/;
 
-    public static native String toJson(com.logikas.gwt.sample.client.model.JsObject object) /*-{
+    public static native String toJson(JsObject object) /*-{
      return JSON.stringify(object);
      }-*/;
 

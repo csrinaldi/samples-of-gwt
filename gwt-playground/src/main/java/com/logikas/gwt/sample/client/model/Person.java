@@ -9,6 +9,7 @@ import com.google.gwt.core.client.js.JsExport;
 import com.google.gwt.core.client.js.JsNamespace;
 import com.google.gwt.core.client.js.JsType;
 import com.logikas.gwt.sample.client.model.datatable.Model;
+import com.workingflows.js.jscore.client.api.JsObject;
 
 /**
  *
@@ -16,7 +17,7 @@ import com.logikas.gwt.sample.client.model.datatable.Model;
  */
 @JsType
 @JsNamespace("$wnd.Logikas.Model")
-public class Person implements Model, com.logikas.gwt.sample.client.model.JsObject {
+public class Person implements Model, JsObject {
 
     private String name;
 

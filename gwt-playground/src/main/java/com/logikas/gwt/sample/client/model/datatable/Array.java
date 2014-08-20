@@ -6,8 +6,8 @@
 
 package com.logikas.gwt.sample.client.model.datatable;
 
-import com.logikas.gwt.sample.client.model.JsObject;
 import com.google.gwt.core.client.js.JsType;
+import com.workingflows.js.jscore.client.api.JsObject;
 
 /**
  *

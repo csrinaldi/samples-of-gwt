@@ -11,7 +11,8 @@ import com.logikas.gwt.sample.client.databinding.PathObserver;
 import com.logikas.gwt.sample.client.databinding.listener.ChangeFnListener;
 import com.logikas.gwt.sample.client.databinding.listener.OpenObjectObserverListener;
 import com.logikas.gwt.sample.client.databinding.listener.OpenPathObserverListener;
-import com.logikas.gwt.sample.client.model.JsObject;
+import com.workingflows.js.jscore.client.api.JsObject;
+
 
 
 /**
