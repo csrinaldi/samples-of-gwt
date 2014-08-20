@@ -35,26 +35,17 @@
             <version>${gwtVersion}</version>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>1.0.0.GA</version>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>1.0.0.GA</version>
-            <classifier>sources</classifier>
-            <scope>test</scope>
-        </dependency>
         
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20140107</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.workingflows.js</groupId>
+            <artifactId>jscore</artifactId>
+            <version>1.0</version>
         </dependency>
 
     </dependencies>
@@ -67,7 +58,10 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>2.6.1</version>
+                <version>2.7.0-SNAPSHOT</version>
+                <configuration>
+                    <style>PRETTY</style>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>

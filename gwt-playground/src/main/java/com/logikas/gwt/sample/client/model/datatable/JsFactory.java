@@ -6,15 +6,18 @@
 
 package com.logikas.gwt.sample.client.model.datatable;
 
-import com.google.gwt.core.client.js.JsType;
-
 /**
  *
- * @author iron
+ * @author Cristian Rinaldi
  */
-@JsType
-public interface Row {
+public class JsFactory {
     
-    DataTableElement add(Array data);
+    /**
+     * Create a native JSON object of Javascript
+     * @return 
+     */
+    public static native JSON createJSON() /*-{
+     return JSON;
+     }-*/;
     
 }
