@@ -8,14 +8,17 @@ import com.logikas.gwt.sample.client.model.Employee;
 import com.logikas.gwt.sample.client.model.Person;
 import com.logikas.gwt.sample.client.model.datatable.OptionConfig;
 import com.logikas.gwt.sample.client.model.datatable.DataTableElement;
+import com.workingflows.js.jscore.client.api.Array;
 import com.workingflows.js.jscore.client.api.Function;
 import com.workingflows.js.jscore.client.api.JsObject;
 import com.workingflows.js.jscore.client.api.promise.Promise;
 import com.workingflows.js.jscore.client.api.promise.PromiseFn;
+import com.workingflows.js.jscore.client.api.promise.PromiseThenFn;
 import com.workingflows.js.jscore.client.api.promise.Rejected;
 import com.workingflows.js.jscore.client.api.promise.Resolve;
 import com.workingflows.js.jscore.client.factory.Browser;
 import com.workingflows.js.jscore.client.factory.JS;
+import java.util.Arrays;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -152,18 +155,19 @@ public class gwt_sample implements EntryPoint {
          }), person);*/
 
         button.setInnerText("Clear changes");
-        
-        JS.Object.observe(person, JS.Function(new Function() {
+
+        JS.Object.observe(person, JS.Function(new Function<Array, Object>() {
             @Override
-            public void f(Object... changed) {
+            public Object f(Array changed) {
                 window().getConsole().log("Changed Person .... ");
                 window().getConsole().log(changed);
                 window().getConsole().log("Changed Person .... ");
+                return null;
             }
         }));
 
         window().getConsole().log("%cWelcome to JSInterop!%c", "font-size:1.5em;color:#4558c9;", "color:#d61a7f;font-size:1em;");
-        
+
         window().getConsole().log("Definido Observe .... ");
 
         div.appendChild(p);
@@ -191,24 +195,80 @@ public class gwt_sample implements EntryPoint {
 
         person.setEmail("hola");
         person.setName("fff");
-        
-        
+
         Promise p1 = Browser.newPromise(JS.Function(new PromiseFn() {
             @Override
             public void f(Resolve resolve, Rejected rejected) {
-                window().getConsole().log("Promise Resolve");
-                resolve.resolve(true);
+                resolve.resolve("Resolve Promise P1");
             }
         }));
-        
-        window().getConsole().log(p1);
-        
-        p1.then(JS.Function(new Function() {
+
+        final Promise p3 = Browser.newPromise(JS.Function(new PromiseFn() {
             @Override
-            public void f(Object... changed) {
-                window().getConsole().log("Promise Complete");
+            public void f(Resolve resolve, Rejected rejected) {
+                resolve.resolve("Resolve Promise P3");
             }
         }));
+
+        p1.then(
+                JS.Function(
+                        new PromiseThenFn() {
+                            @Override
+                            public Promise f(final Object changed) {
+                                Browser.getWindow().getConsole().log("Promise Complete: " + changed);
+                                return Browser.newPromise(JS.Function(new PromiseFn() {
+                                    @Override
+                                    public void f(Resolve resolve, Rejected rejected) {
+                                        resolve.resolve(changed + " > Other Promise");
+                                    }
+                                }));
+                            }
+                        }), JS.Function(
+                        new PromiseThenFn() {
+                            @Override
+                            public Promise f(final Object changed) {
+                                Browser.getWindow().getConsole().log("Promise with Error: " + changed);
+                                return Browser.newPromise(JS.Function(new PromiseFn() {
+                                    @Override
+                                    public void f(Resolve resolve, Rejected rejected) {
+                                        rejected.rejected(changed + " > Other With Error Promise");
+                                    }
+                                }));
+                            }
+                        })
+        ).then(
+                JS.Function(
+                        new PromiseThenFn() {
+                            @Override
+                            public Promise f(final Object changed) {
+                                Browser.getWindow().getConsole().log("Promise Complete: " + changed);
+                                return null;
+                            }
+                        }), JS.Function(
+                        new PromiseThenFn() {
+                            @Override
+                            public Promise f(Object changed) {
+                                Browser.getWindow().getConsole().log("Promise with Error: " + changed);
+                                return null;
+                            }
+                        })
+        );
+
+        JS.Promise.all(true, p1, p3).then(JS.Function(
+                new PromiseThenFn() {
+                    @Override
+                    public Promise f(Object changed) {
+                        Browser.getWindow().getConsole().log("Promise Complete: " + changed);
+                        return null;
+                    }
+                }),
+                JS.Function(new PromiseThenFn() {
+                    @Override
+                    public Promise f(Object changed) {
+                        Browser.getWindow().getConsole().log("Promise Error: " + changed);
+                        return null;
+                    }
+                }));
     }
 
     public static native void newJSModule()/*-{
