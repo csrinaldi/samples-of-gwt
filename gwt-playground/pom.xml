@@ -47,6 +47,18 @@
             <artifactId>jscore</artifactId>
             <version>1.0</version>
         </dependency>
+        
+        <dependency>
+            <groupId>com.workingflows.js</groupId>
+            <artifactId>jquery</artifactId>
+            <version>1.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.workingflows.js</groupId>
+            <artifactId>select-plugin</artifactId>
+            <version>1.0</version>
+        </dependency>
 
     </dependencies>
 

@@ -4,10 +4,15 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.js.JsProperty;
 import com.google.gwt.core.client.js.JsType;
 import com.logikas.gwt.sample.client.databinding.PathObserver;
+import com.logikas.gwt.sample.client.databinding.factory.PathObserverFactory;
+import com.logikas.gwt.sample.client.databinding.listener.OpenPathObserverListener;
 import com.logikas.gwt.sample.client.model.Employee;
 import com.logikas.gwt.sample.client.model.Person;
-import com.logikas.gwt.sample.client.model.datatable.OptionConfig;
 import com.logikas.gwt.sample.client.model.datatable.DataTableElement;
+import com.logikas.gwt.sample.client.model.datatable.OptionConfig;
+import com.workingflows.js.jquery.plugin.select.client.api.Config;
+import com.workingflows.js.jquery.plugin.select.client.api.SelectElement;
+import com.workingflows.js.jquery.plugin.select.client.factory.Factories;
 import com.workingflows.js.jscore.client.api.Array;
 import com.workingflows.js.jscore.client.api.Function;
 import com.workingflows.js.jscore.client.api.JsObject;
@@ -18,7 +23,6 @@ import com.workingflows.js.jscore.client.api.promise.Rejected;
 import com.workingflows.js.jscore.client.api.promise.Resolve;
 import com.workingflows.js.jscore.client.factory.Browser;
 import com.workingflows.js.jscore.client.factory.JS;
-import java.util.Arrays;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -142,17 +146,17 @@ public class gwt_sample implements EntryPoint {
 
         final Person person = new Person();
         person.setName("Cristian");
-        /*final PathObserver<Person, String> observer = PathObserverFactory.createPathObserver(person, "name");
-         input.bind("value", observer);
-         final PathObserver<Person, String> observer1 = PathObserverFactory.createPathObserver(person, "name");
-         final String original = observer1.open(PathObserverFactory.createOpenPathObserverListener(new OpenPathObserverListener<Person>() {
-         @Override
-         public void onOpen(String newValue, String oldValue) {
-         HTMLElement p = doc.createElement("P");
-         p.setInnerText("The new Value is: " + newValue);
-         body.appendChild(p);
-         }
-         }), person);*/
+        final PathObserver<Person, String> observer = PathObserverFactory.createPathObserver(person, "name");
+        input.bind("value", observer);
+        final PathObserver<Person, String> observer1 = PathObserverFactory.createPathObserver(person, "name");
+        final String original = observer1.open(PathObserverFactory.createOpenPathObserverListener(new OpenPathObserverListener<Person>() {
+            @Override
+            public void onOpen(String newValue, String oldValue) {
+                HTMLElement p = doc.createElement("P");
+                p.setInnerText("The new Value is: " + newValue);
+                body.appendChild(p);
+            }
+        }), person);
 
         button.setInnerText("Clear changes");
 
@@ -269,6 +273,33 @@ public class gwt_sample implements EntryPoint {
                         return null;
                     }
                 }));
+
+        Config conf = Factories.config(
+                Boolean.TRUE,
+                Boolean.TRUE,
+                JS.Function(new Function<Array, Object>() {
+
+                    @Override
+                    public Object f(Array changed) {
+                        Browser.getWindow().getConsole().log(changed);
+                        return changed;
+                    }
+
+                }),
+                JS.Function(new Function<Object, Object>() {
+
+                    @Override
+                    public Object f(Object changed) {
+                        Browser.getWindow().getConsole().log(changed);
+                        return changed;
+                    }
+
+                }));
+        
+        SelectElement select = (SelectElement) $("#my-select");
+        Browser.getWindow().getConsole().log(select);
+        
+        select.multiSelect(conf);
     }
 
     public static native void newJSModule()/*-{

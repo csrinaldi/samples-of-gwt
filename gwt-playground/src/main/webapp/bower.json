@@ -29,6 +29,7 @@
     "bootstrap-swith" : "git://github.com/nostalgiaz/bootstrap-switch.git",
     "datatables": "git://github.com/DataTables/DataTables.git",
     "datatables_plugin": "git://github.com/DataTables/Plugins.git",
-    "jquery": "~2.1.1"
+    "jquery": "~2.1.1",
+    "multiselect" : "https://github.com/lou/multi-select.git"
   }
 }

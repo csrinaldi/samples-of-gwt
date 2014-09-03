@@ -47,6 +47,8 @@
         <link rel="stylesheet" href="bower/bootstrap-swith/dist/css/bootstrap3/bootstrap-switch.css">
         <script src="bower/bootstrap-swith/dist/js/bootstrap-switch.js"></script>
 
+        <script src="bower/multiselect/js/jquery.multi-select.js"></script>
+        <link rel="stylesheet" href="bower/multiselect/css/multi-select.css">
 
         <script type="text/javascript" src="bower/datatables/media/js/jquery.dataTables.js"></script>
         <link rel="stylesheet" href="bower/datatables_plugin/integration/bootstrap/3/dataTables.bootstrap.css">
@@ -120,7 +122,13 @@
             </tfoot>
         </table>
 
-
+        <select multiple="multiple" id="my-select" name="my-select[]">
+            <option value='elem_1'>elem 1</option>
+            <option value='elem_2'>elem 2</option>
+            <option value='elem_3'>elem 3</option>
+            <option value='elem_4'>elem 4</option>
+            <option value='elem_100'>elem 100</option>
+        </select>
 
     </body>
 </html>
