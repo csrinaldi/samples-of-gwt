@@ -27,5 +27,4 @@ public interface PathObserver<T extends JsObject, E extends Object> extends Obse
      * @param value 
      */
     void setValue(E value);
-    
 }

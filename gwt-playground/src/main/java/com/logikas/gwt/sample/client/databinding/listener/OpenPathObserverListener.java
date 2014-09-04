@@ -23,12 +23,9 @@ import com.workingflows.js.jscore.client.api.JsObject;
  */
 @JsType
 public interface OpenPathObserverListener<T extends JsObject> extends ChangeFnListener<T> {
-
     /**
-     * 
      * @param newValue
      * @param oldValue 
      */
     void onOpen(String newValue, String oldValue);
-
 }

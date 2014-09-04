@@ -22,6 +22,4 @@ import com.workingflows.js.jscore.client.api.JsObject;
  *
  */
 @JsType
-public interface ChangeFnListener<T extends JsObject> {
-
-}
+public interface ChangeFnListener<T extends JsObject> {}

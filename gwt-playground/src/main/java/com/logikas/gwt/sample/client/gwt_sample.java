@@ -8,11 +8,10 @@ import com.logikas.gwt.sample.client.databinding.factory.PathObserverFactory;
 import com.logikas.gwt.sample.client.databinding.listener.OpenPathObserverListener;
 import com.logikas.gwt.sample.client.model.Employee;
 import com.logikas.gwt.sample.client.model.Person;
-import com.logikas.gwt.sample.client.model.datatable.DataTableElement;
-import com.logikas.gwt.sample.client.model.datatable.OptionConfig;
+import com.workingflows.js.jquery.client.api.JQueryElement;
 import com.workingflows.js.jquery.plugin.select.client.api.Config;
-import com.workingflows.js.jquery.plugin.select.client.api.SelectElement;
-import com.workingflows.js.jquery.plugin.select.client.factory.Factories;
+import com.workingflows.js.jquery.plugin.select.client.api.MultiSelect;
+import com.workingflows.js.jquery.plugin.select.client.api.SelectFunction;
 import com.workingflows.js.jscore.client.api.Array;
 import com.workingflows.js.jscore.client.api.Function;
 import com.workingflows.js.jscore.client.api.JsObject;
@@ -23,6 +22,8 @@ import com.workingflows.js.jscore.client.api.promise.Rejected;
 import com.workingflows.js.jscore.client.api.promise.Resolve;
 import com.workingflows.js.jscore.client.factory.Browser;
 import com.workingflows.js.jscore.client.factory.JS;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -48,32 +49,6 @@ public class gwt_sample implements EntryPoint {
     public interface JFunction {
 
         Object f(Object... o);
-    }
-
-    @JsType
-    public interface JQueryPromise {
-
-        JQueryPromise when(JFunction f);
-
-        void done(JFunction f);
-
-    }
-
-    @JsType(prototype = "jQuery")
-    public interface JQueryElement {
-
-        JQueryElement append(JQueryElement element);
-
-        @JsProperty
-        JQueryElement html();
-
-        void data(String key, String value);
-
-        JQueryPromise promise();
-
-        DataTableElement DataTable(OptionConfig config);
-
-        //DataTableElement DataTable();
     }
 
     public interface BootstrapSwichElement extends JQueryElement {
@@ -184,15 +159,6 @@ public class gwt_sample implements EntryPoint {
         checked.data("off-text", "NO");
         $("body").append(checked);
 
-        JQueryElement r = $("<div>");
-
-        r.promise().done(Fn(new JFunction() {
-            @Override
-            public Object f(Object... o) {
-                return true;
-            }
-        }, "Cristian", "Rinaldi"));
-
         BootstrapSwichElement bse = bootstrapSwich(checked, Browser.newObject());
 
         final Employee employee = new Employee("Cristian", "202223232");
@@ -274,32 +240,34 @@ public class gwt_sample implements EntryPoint {
                     }
                 }));
 
-        Config conf = Factories.config(
+        final List<String> list = new ArrayList<>();
+        
+        Config conf = MultiSelect.config(
                 Boolean.TRUE,
                 Boolean.TRUE,
-                JS.Function(new Function<Array, Object>() {
-
+                MultiSelect.Function(new SelectFunction() {
                     @Override
-                    public Object f(Array changed) {
-                        Browser.getWindow().getConsole().log(changed);
-                        return changed;
+                    public void f(String changed) {
+                        com.google.gwt.user.client.Window.alert(changed);
+                        list.add(changed);
                     }
 
                 }),
-                JS.Function(new Function<Object, Object>() {
-
+                MultiSelect.Function(new SelectFunction() {
                     @Override
-                    public Object f(Object changed) {
-                        Browser.getWindow().getConsole().log(changed);
-                        return changed;
+                    public void f(String changed) {
+                        com.google.gwt.user.client.Window.alert(changed);
+                        list.remove(changed);
                     }
-
                 }));
+
+        //SelectElement select = (SelectElement) $("#my-select");
+
+        MultiSelect mselect = MultiSelect.create("#my-select", conf);
+        mselect.addOption(MultiSelect.createModel("rol1", "Role 1", 0));
+        mselect.addOption(MultiSelect.createModel("rol2", "Role 1", 1));
+        mselect.addOption(MultiSelect.createModel("rol3", "Role 1", 2));
         
-        SelectElement select = (SelectElement) $("#my-select");
-        Browser.getWindow().getConsole().log(select);
-        
-        select.multiSelect(conf);
     }
 
     public static native void newJSModule()/*-{
