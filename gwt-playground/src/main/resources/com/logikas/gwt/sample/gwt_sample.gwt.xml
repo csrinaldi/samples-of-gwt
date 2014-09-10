@@ -7,6 +7,8 @@
     <inherits name="com.workingflows.js.jquery.JQuery" />
     <inherits name="com.workingflows.js.jquery.JQuery" />
     <inherits name="com.workingflows.js.jquery.plugin.select.Select"/>
+    <inherits name="com.workingflows.js.bootstraps.Bootstraps"/>
+    
 
     <!-- Specify the app entry point class.                         -->
     <entry-point class='com.logikas.gwt.sample.client.gwt_sample' />

@@ -1,273 +1,185 @@
 package com.logikas.gwt.sample.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.js.JsProperty;
-import com.google.gwt.core.client.js.JsType;
-import com.logikas.gwt.sample.client.databinding.PathObserver;
-import com.logikas.gwt.sample.client.databinding.factory.PathObserverFactory;
-import com.logikas.gwt.sample.client.databinding.listener.OpenPathObserverListener;
 import com.logikas.gwt.sample.client.model.Employee;
-import com.logikas.gwt.sample.client.model.Person;
+import com.workingflows.js.bootstraps.client.BootstrapSwitchElement;
+import com.workingflows.js.bootstraps.client.factory.BootstrapFactory;
 import com.workingflows.js.jquery.client.api.JQueryElement;
-import com.workingflows.js.jquery.plugin.select.client.api.Config;
-import com.workingflows.js.jquery.plugin.select.client.api.MultiSelect;
-import com.workingflows.js.jquery.plugin.select.client.api.SelectFunction;
-import com.workingflows.js.jscore.client.api.Array;
+import static com.workingflows.js.jquery.client.factory.Factories.$;
+import com.workingflows.js.jscore.client.api.Document;
 import com.workingflows.js.jscore.client.api.Function;
-import com.workingflows.js.jscore.client.api.JsObject;
-import com.workingflows.js.jscore.client.api.promise.Promise;
-import com.workingflows.js.jscore.client.api.promise.PromiseFn;
-import com.workingflows.js.jscore.client.api.promise.PromiseThenFn;
-import com.workingflows.js.jscore.client.api.promise.Rejected;
-import com.workingflows.js.jscore.client.api.promise.Resolve;
+import com.workingflows.js.jscore.client.api.html.HTMLBodyElement;
+import com.workingflows.js.jscore.client.api.html.HTMLElement;
 import com.workingflows.js.jscore.client.factory.Browser;
 import com.workingflows.js.jscore.client.factory.JS;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class gwt_sample implements EntryPoint {
 
-    @JsType(prototype = "Console")
-    public interface Console {
-
-        void log(Object object, String... params);
-    }
-
-    @JsType(prototype = "Window")
-    public interface Window {
-
-        @JsProperty(value = "console")
-        Console getConsole();
-
-        public void alert(String hola);
-    }
-
-    @JsType
-    public interface JFunction {
-
-        Object f(Object... o);
-    }
-
-    public interface BootstrapSwichElement extends JQueryElement {
-
-    }
-
-    @JsType(prototype = "HTMLBodyElement")
-    public interface HTMLBodyElement extends HTMLElement {
-
-    }
-
-    @JsType(prototype = "EventTarget")
-    public interface EventTarget extends JsObject {
-
-    }
-
-    @JsType(prototype = "Node")
-    public interface Node extends EventTarget {
-
-        void bind(String property, PathObserver observer);
-    }
-
-    @JsType(prototype = "Element")
-    public interface Element extends Node {
-
-    }
-
-    @JsType
-    public interface EventListener<E extends JsObject> {
-
-        void onEvent(E event);
-    }
-
-    @JsType(prototype = "HTMLElement")
-    public interface HTMLElement extends Element {
-
-        public void setAttribute(String align, String center);
-
-        public void appendChild(HTMLElement element);
-
-        public void addEventListener(String event, EventListener<? extends JsObject> handler);
-
-        @JsProperty
-        public void setInnerHTML(String text);
-
-        @JsProperty
-        public void setInnerText(String text);
-
-    }
-
-    @JsType(isNative = true, prototype = "Document")
-    public interface Document {
-
-        public HTMLElement createElement(String div);
-
-        public HTMLElement getElementsByTagName(String body);
-
-    }
-
     @Override
     public void onModuleLoad() {
 
-        final Document doc = getDocument();
-        final HTMLBodyElement body = bodyElement();
+        final Document doc = Browser.getDocument();
+        final HTMLBodyElement body = doc.getBody();
 
         final HTMLElement div = doc.createElement("DIV");
         final HTMLElement p = doc.createElement("P");
         final HTMLElement input = doc.createElement("input");
         final HTMLElement button = doc.createElement("button");
 
-        final Person person = new Person();
-        person.setName("Cristian");
-        final PathObserver<Person, String> observer = PathObserverFactory.createPathObserver(person, "name");
-        input.bind("value", observer);
-        final PathObserver<Person, String> observer1 = PathObserverFactory.createPathObserver(person, "name");
-        final String original = observer1.open(PathObserverFactory.createOpenPathObserverListener(new OpenPathObserverListener<Person>() {
-            @Override
-            public void onOpen(String newValue, String oldValue) {
-                HTMLElement p = doc.createElement("P");
-                p.setInnerText("The new Value is: " + newValue);
-                body.appendChild(p);
-            }
-        }), person);
+        /*final Person person = new Person();
+         person.setName("Cristian");
+         final PathObserver<Person, String> observer = PathObserverFactory.createPathObserver(person, "name");
+         input.bind("value", observer);
+         final PathObserver<Person, String> observer1 = PathObserverFactory.createPathObserver(person, "name");
+         final String original = observer1.open(PathObserverFactory.createOpenPathObserverListener(new OpenPathObserverListener<Person>() {
+         @Override
+         public void onOpen(String newValue, String oldValue) {
+         HTMLElement p = doc.createElement("P");
+         p.setInnerText("The new Value is: " + newValue);
+         body.appendChild(p);
+         }
+         }), person);
 
-        button.setInnerText("Clear changes");
+         button.setInnerText("Clear changes");
 
-        JS.Object.observe(person, JS.Function(new Function<Array, Object>() {
+         JS.Object.observe(person, JS.Function(new Function<Array, Object>() {
+         @Override
+         public Object f(Array changed) {
+         return null;
+         }
+         }));
+
+         Browser.getWindow().getConsole().log("%cWelcome to JSInterop!%c", "font-size:1.5em;color:#4558c9;", "color:#d61a7f;font-size:1em;");
+
+         Browser.getWindow().getConsole().log("Definido Observe .... ");
+
+         div.appendChild(p);
+         div.appendChild(input);
+         body.appendChild(div);
+         body.appendChild(button);*/
+        JQueryElement checked = $("<input type='checkbox' id='c' checked></input>");
+        $("body").append(checked);
+
+        final BootstrapSwitchElement b = BootstrapFactory.BootstrapSwitch("#c");
+        b.bootstrapSwitch(BootstrapSwitchElement.ONTEXT, "SI");
+        b.bootstrapSwitch(BootstrapSwitchElement.OFFTEXT, "NO");
+        b.on(BootstrapSwitchElement.initEvent, JS.Function(new Function<Object, Void>() {
             @Override
-            public Object f(Array changed) {
-                window().getConsole().log("Changed Person .... ");
-                window().getConsole().log(changed);
-                window().getConsole().log("Changed Person .... ");
+            public Void f(Object changed) {
+                Browser.getWindow().getConsole().log(b.getState());
                 return null;
             }
         }));
 
-        window().getConsole().log("%cWelcome to JSInterop!%c", "font-size:1.5em;color:#4558c9;", "color:#d61a7f;font-size:1em;");
-
-        window().getConsole().log("Definido Observe .... ");
-
-        div.appendChild(p);
-        div.appendChild(input);
-        body.appendChild(div);
-        body.appendChild(button);
-
-        JQueryElement checked = $("<input type='checkbox' checked></input>");
-        checked.data("on-text", "SI");
-        checked.data("off-text", "NO");
-        $("body").append(checked);
-
-        BootstrapSwichElement bse = bootstrapSwich(checked, Browser.newObject());
-
+        //BootstrapSwichElement bse = bootstrapSwich(checked, Browser.newObject());
         final Employee employee = new Employee("Cristian", "202223232");
 
-        person.setEmail("hola");
-        person.setName("fff");
+        /*person.setEmail("hola");
+         person.setName("fff");
 
-        Promise p1 = Browser.newPromise(JS.Function(new PromiseFn() {
-            @Override
-            public void f(Resolve resolve, Rejected rejected) {
-                resolve.resolve("Resolve Promise P1");
-            }
-        }));
+         Promise p1 = Browser.newPromise(JS.Function(new PromiseFn() {
+         @Override
+         public void f(Resolve resolve, Rejected rejected) {
+         resolve.resolve("Resolve Promise P1");
+         }
+         }));
 
-        final Promise p3 = Browser.newPromise(JS.Function(new PromiseFn() {
-            @Override
-            public void f(Resolve resolve, Rejected rejected) {
-                resolve.resolve("Resolve Promise P3");
-            }
-        }));
+         final Promise p3 = Browser.newPromise(JS.Function(new PromiseFn() {
+         @Override
+         public void f(Resolve resolve, Rejected rejected) {
+         resolve.resolve("Resolve Promise P3");
+         }
+         }));
 
-        p1.then(
-                JS.Function(
-                        new PromiseThenFn() {
-                            @Override
-                            public Promise f(final Object changed) {
-                                Browser.getWindow().getConsole().log("Promise Complete: " + changed);
-                                return Browser.newPromise(JS.Function(new PromiseFn() {
-                                    @Override
-                                    public void f(Resolve resolve, Rejected rejected) {
-                                        resolve.resolve(changed + " > Other Promise");
-                                    }
-                                }));
-                            }
-                        }), JS.Function(
-                        new PromiseThenFn() {
-                            @Override
-                            public Promise f(final Object changed) {
-                                Browser.getWindow().getConsole().log("Promise with Error: " + changed);
-                                return Browser.newPromise(JS.Function(new PromiseFn() {
-                                    @Override
-                                    public void f(Resolve resolve, Rejected rejected) {
-                                        rejected.rejected(changed + " > Other With Error Promise");
-                                    }
-                                }));
-                            }
-                        })
-        ).then(
-                JS.Function(
-                        new PromiseThenFn() {
-                            @Override
-                            public Promise f(final Object changed) {
-                                Browser.getWindow().getConsole().log("Promise Complete: " + changed);
-                                return null;
-                            }
-                        }), JS.Function(
-                        new PromiseThenFn() {
-                            @Override
-                            public Promise f(Object changed) {
-                                Browser.getWindow().getConsole().log("Promise with Error: " + changed);
-                                return null;
-                            }
-                        })
-        );
+         p1.then(
+         JS.Function(
+         new PromiseThenFn() {
+         @Override
+         public Promise f(final Object changed) {
+         Browser.getWindow().getConsole().log("Promise Complete: " + changed);
+         return Browser.newPromise(JS.Function(new PromiseFn() {
+         @Override
+         public void f(Resolve resolve, Rejected rejected) {
+         resolve.resolve(changed + " > Other Promise");
+         }
+         }));
+         }
+         }), JS.Function(
+         new PromiseThenFn() {
+         @Override
+         public Promise f(final Object changed) {
+         Browser.getWindow().getConsole().log("Promise with Error: " + changed);
+         return Browser.newPromise(JS.Function(new PromiseFn() {
+         @Override
+         public void f(Resolve resolve, Rejected rejected) {
+         rejected.rejected(changed + " > Other With Error Promise");
+         }
+         }));
+         }
+         })
+         ).then(
+         JS.Function(
+         new PromiseThenFn() {
+         @Override
+         public Promise f(final Object changed) {
+         Browser.getWindow().getConsole().log("Promise Complete: " + changed);
+         return null;
+         }
+         }), JS.Function(
+         new PromiseThenFn() {
+         @Override
+         public Promise f(Object changed) {
+         Browser.getWindow().getConsole().log("Promise with Error: " + changed);
+         return null;
+         }
+         })
+         );
 
-        JS.Promise.all(true, p1, p3).then(JS.Function(
-                new PromiseThenFn() {
-                    @Override
-                    public Promise f(Object changed) {
-                        Browser.getWindow().getConsole().log("Promise Complete: " + changed);
-                        return null;
-                    }
-                }),
-                JS.Function(new PromiseThenFn() {
-                    @Override
-                    public Promise f(Object changed) {
-                        Browser.getWindow().getConsole().log("Promise Error: " + changed);
-                        return null;
-                    }
-                }));
+         JS.Promise.all(true, p1, p3).then(JS.Function(
+         new PromiseThenFn() {
+         @Override
+         public Promise f(Object changed) {
+         Browser.getWindow().getConsole().log("Promise Complete: " + changed);
+         return null;
+         }
+         }),
+         JS.Function(new PromiseThenFn() {
+         @Override
+         public Promise f(Object changed) {
+         Browser.getWindow().getConsole().log("Promise Error: " + changed);
+         return null;
+         }
+         }));
 
-        final List<String> list = new ArrayList<>();
-        
-        Config conf = MultiSelect.config(
-                Boolean.TRUE,
-                Boolean.TRUE,
-                MultiSelect.Function(new SelectFunction() {
-                    @Override
-                    public void f(String changed) {
-                        com.google.gwt.user.client.Window.alert(changed);
-                        list.add(changed);
-                    }
+         final List<String> list = new ArrayList<>();
 
-                }),
-                MultiSelect.Function(new SelectFunction() {
-                    @Override
-                    public void f(String changed) {
-                        com.google.gwt.user.client.Window.alert(changed);
-                        list.remove(changed);
-                    }
-                }));
+         Config conf = MultiSelect.config(
+         Boolean.TRUE,
+         Boolean.TRUE,
+         MultiSelect.Function(new SelectOrDeselectFunction() {
+         @Override
+         public void f(String changed) {
+         com.google.gwt.user.client.Window.alert(changed);
+         list.add(changed);
+         }
 
-        //SelectElement select = (SelectElement) $("#my-select");
+         }),
+         MultiSelect.Function(new SelectOrDeselectFunction() {
+         @Override
+         public void f(String changed) {
+         com.google.gwt.user.client.Window.alert(changed);
+         list.remove(changed);
+         }
+         }));
 
-        MultiSelect mselect = MultiSelect.create("#my-select", conf);
-        mselect.addOption(MultiSelect.createModel("rol1", "Role 1", 0));
-        mselect.addOption(MultiSelect.createModel("rol2", "Role 1", 1));
-        mselect.addOption(MultiSelect.createModel("rol3", "Role 1", 2));
-        
+         //SelectElement select = (SelectElement) $("#my-select");
+         MultiSelect mselect = MultiSelect.create("#my-select", conf);
+         mselect.addOption(MultiSelect.createModel("rol1", "Role 1", 0));
+         mselect.addOption(MultiSelect.createModel("rol2", "Role 1", 1));
+         mselect.addOption(MultiSelect.createModel("rol3", "Role 1", 2));*/
     }
 
     public static native void newJSModule()/*-{
@@ -275,35 +187,4 @@ public class gwt_sample implements EntryPoint {
      console.log(module);
      console.log(module.getName());
      }-*/;
-
-    public static native Document getDocument() /*-{
-     return $wnd.document;
-     }-*/;
-
-    public static native HTMLBodyElement bodyElement() /*-{
-     return $wnd.document.body;
-     }-*/;
-
-    public static native Window window() /*-{
-     return $wnd;
-     }-*/;
-
-    public static native JFunction Fn(JFunction f, Object... params)/*-{
-     return function(){
-     f.f(params);
-     }
-     }-*/;
-
-    public static native BootstrapSwichElement bootstrapSwich(JQueryElement element, JsObject options) /*-{
-     return new $wnd.$.fn.bootstrapSwitch.Constructor(element, options);
-     }-*/;
-
-    public static native JQueryElement $(String selector) /*-{
-     return $wnd.$(selector);
-     }-*/;
-
-    public static native String toJson(JsObject object) /*-{
-     return JSON.stringify(object);
-     }-*/;
-
 }

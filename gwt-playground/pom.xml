@@ -59,6 +59,12 @@
             <artifactId>select-plugin</artifactId>
             <version>1.0</version>
         </dependency>
+        
+        <dependency>
+            <groupId>com.workingflows.js.bootstraps</groupId>
+            <artifactId>bootstraps</artifactId>
+            <version>1.0</version>
+        </dependency>
 
     </dependencies>
 
